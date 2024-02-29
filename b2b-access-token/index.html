@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1"> 
+  <title>SHA512 Calculator</title>
+  <link rel="stylesheet" href="https://unpkg.com/spectre.css/dist/spectre.min.css">
+  <link rel="stylesheet" href="https://unpkg.com/spectre.css/dist/spectre-exp.min.css">
+  <link rel="stylesheet" href="https://unpkg.com/spectre.css/dist/spectre-icons.min.css">
+  <style>
+    pre{
+      font-size:60%;
+      word-break: break-all;
+      white-space: pre-wrap;
+    }
+    input, textarea{
+      width: 50%;
+      font-size: 80%;
+    }
+    @media only screen and (max-width: 768px) {
+      input, textarea{
+        width: 80%;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <article>
+      <br>
+      <h4>SHA256withRSA Signature Calculator Tool</h4>
+      <h5>Input:</h5>
+      <form id="mainForm" onsubmit="generateSignature(); return false">
+        <label>PrivateKey:</label><br>
+        <textarea name="inputString" id="privateKey" rows="5">
+-----BEGIN PRIVATE KEY-----
+MIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQCVZu2WHd4z5tbe
+fkAWPjbB10Lgvu1CpsuIIVtO/wrrvKeD2LArmYSf5QxeJGG8HYlVYVp8I8/EVqay
+JUbcyOd4aMLQFiCambDipecCfI7ecJ0K4+2ZneWOEq9JM91ZnGtwuLVdr1X/4/Nv
+yGuNvmLAyfpJkU14yZliAUqJJ656jpM+WfY+hOpcLOzUe2wzx5RV7wYCyMl7/d1i
+X33afJc6kbbUaA27yjlPdY6m0+DoZ0NNaRNZS7jzfJFtVXLTg/PgvwMNlMO/5Zyw
+BWIOfWsD+MHUC6P9QYrHai8ZwEf9r+GivlNsAFs4NTpw9MdPngrexJm29k1Xh4UM
+HV//jB1/AgMBAAECggEADcXGyitns/4oOauGyeYjUxw+eIxxP88zfRGiIralMZUb
+Fi7wEpzc2oaZbMZK0jYg1mOanU4J1a4tQMfp7+l/WRzDNL6Nc+MOKN6lXJfR7dSQ
+zZO0cBBbvIyhZwymb5/ZUbNdWM0UjvnbE6d0rsTpwp77+TMxYpynDJ9U2S70ySxe
+fGi7x4rK02/8xmj1fY/Ls+uoYhF4IbGJIkFvrlAdWyFvv6sCGBYxl5sPuitgQxPv
+Yc7dS7HE+6nZ+wWgoIXjC4CfxHBa9u3dfu3XAnPY3xpnVsbxCAH9OOIrZPY0C/Pq
+gj+EElCBChUzDiedV3XipKUweDA+64sNm5NjqlqU8QKBgQDFf5a9vHVf9r2CTOgm
+z5wTrK7aTwKwCNC4zpZUxDR8k7AV2gTelabpPWqUMZyRMUPs2hyBvhEWVNKxx3qs
+7BAVpmcttuS5/dLNVdhNPUC2IgZqf3jWH2aS3lkci8DATQCphrEXZ3jrNaIRtrSC
+kflE+yY8YP8b7ObktgvHz39JMQKBgQDBqCsMmOsQAveIQk5FGAMxsFU9G7OIBFHo
+xpwkKUCjoqGxM+YQqDvcVeXNd/HdLnmR05//eoONemuDyYy8XRoud4tpaRKU/FK7
+06WdljztB5rn2+cdUbmcU0fZiRQk+WuXsopZn3GUNvA/fQOW9qs7B5Rm5W71FeGk
+ZgsvlAUlrwKBgQCUgFFaLWCcXa01UpqkxCp5aLi5EfvVXWuD6mKDLlzA51PZums6
+6o/shO+kqoEtczu91mrk64NxpSof3vxRFdcqUEr4xrLJXx+oocnYmhwUVxU38s1r
+Q4UfHe0nV7YBYmUDE3IJRRZY1aUdaKHmI9iok6e2csCfwMwEYRYOkekFoQKBgCyy
+Oa1gpfA+Hw+N7i64ShRv1FyURi2Agb8uB9+4vbiG0rbpeZIioh5KnQ19P4+DKH/l
+zinTBwXiWWpDXH4lJuPOp5ierbFBQ38ibDkg8dLrTG9zK7ZypFpWRmEI6GNYReLv
+TEs/J6HDxFOC8Q8ow4COUUwmbCOY90lQXAiRK1b1AoGAScK1db9X5Ct+JtnjYyzi
+GYLwyPhHCQIVmEDfuvbMs74woQsrBm3dBB3b2vf9pqcSZB4WAbTQ3wCdxCJKg6MN
+6eXBO1M1lcIpZjCDyiXXi7PozNmkasRDUyDFwxlnyDLdRHL3FD+dh6do32FwGLBQ
+u256RIyMB13qIuqrc91Z0hM=
+-----END PRIVATE KEY-----</textarea><br>
+
+        <label>X-CLIENT-KEY</label><br>
+        <input onkeyup="appendInputString();" id="xClientKey" type="text" value="G1234325-SNAP"><br>
+        <label>X-TIMESTAMP <small>(if needed, <a href="#" onclick="generateCurrentTimestampAndOutput();">click here to generate current timestamp</a> )</small></label><br>
+        <input onkeyup="appendInputString();" id="xTimestamp" type="text" value=""><br>
+        <br><br>
+        <label>Appended String ( <code>X-CLIENT-KEY+"|"+X-TIMESTAMP</code> ):</label>
+        <br>
+        <textarea name="appendedString" id="appendedString" rows="2"></textarea>
+        <br>
+        <input class="btn btn-primary" type="submit" value="Generate Signature">
+      </form>
+      <br>
+    </article>
+    <hr>
+
+    <article>
+      <br>
+      <h5>SHA256withRSA Signature Result:</h5>
+      <textarea name="outputString" id="outputString" rows="8" disabled></textarea>
+      <br>
+      <p><small>Next, this is the value to be used as `X-SIGNATURE` HTTP headers.</small></p>
+    </article>
+    <hr>
+
+    <article>
+      <br>
+      <h5>Signature Formula:</h5>
+      <p>- <a href="https://docs.midtrans.com/reference/signature-generation#asymmetric-signature-sha256withrsa">Reference</a></p>
+
+      <br>
+    </article>
+    <hr>
+<!--     
+    <div>
+      <h4>Sample Inputs </h4>
+      <pre>
+    ...
+      </pre>
+    </div>
+-->
+  </div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jsrsasign/11.1.0/jsrsasign-all-min.js" integrity="sha512-Eu9j+HZBor7muHf6IDWoWZ8FKVr6nKe9eIIVR28NEte4Y4GiYRlke26XGdR/re81XE/FfLoLYYVkvNk5GY9RvQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  
+  <script>
+/* HELPER SCRIPTS */
+var generateCurrentTimestampString = function(){
+	return (new Date()).toISOString();
+}
+
+var generateCurrentTimestampAndOutput = function(){
+	document.querySelector('#xTimestamp').value = generateCurrentTimestampString();
+  return false;
+}
+  
+var appendInputString = function(evt){
+  document.querySelector('#appendedString').value = 
+    document.querySelector('#xClientKey').value +
+    "|" +
+    document.querySelector('#xTimestamp').value;
+}
+    
+var generateSignature = function(evt){
+  // input
+  var inputStr = document.querySelector('#appendedString').value
+  var privateKeyString = document.querySelector('#privateKey').value;
+  var combinedStringToSign = document.querySelector('#appendedString').value;
+  
+  // generate signature
+  var sigObject = new KJUR.crypto.Signature({ alg: "SHA256withRSA" });
+  sigObject.init(privateKeyString);
+  sigObject.updateString(combinedStringToSign);
+  var signatureHex = sigObject.sign();
+  // the result was in Hex format, convert it into Base64 String format
+  var signatureString = hextob64(signatureHex);
+  console.log(signatureHex, signatureString);
+
+	// output
+  document.querySelector('#outputString').value = signatureString
+  return false;
+}
+  
+/* MAIN SCRIPT, RUN ON PAGE LOAD */
+var main = function(){
+	generateCurrentTimestampAndOutput();
+  appendInputString();
+  generateSignature();
+};
+main();
+  </script>
+</body>
+</html>
