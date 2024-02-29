@@ -32,6 +32,7 @@
       <h5>Input:</h5>
       <form id="mainForm" onsubmit="generateSignature(); return false">
         <label>PrivateKey:</label><br>
+        <!-- NOTE: This is sample Private Key from Midtrans Docs, it is intended as publicly visible -->
         <textarea name="inputString" id="privateKey" rows="5">
 -----BEGIN PRIVATE KEY-----
 MIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQCVZu2WHd4z5tbe
@@ -90,6 +91,11 @@ u256RIyMB13qIuqrc91Z0hM=
       <br>
       <h5>Signature Formula:</h5>
       <p>- <a href="https://docs.midtrans.com/reference/signature-generation#asymmetric-signature-sha256withrsa">Reference</a></p>
+
+      <h5>Sample Codes:</h5>
+      <ul>
+        <li><a href="https://github.com/Midtrans/SNAP-BI-Signature-Demo/sample-code/b2b-access-token/signatureGenerationNode.js">Javascript (NodeJS)</a></li>
+      </ul>
 
       <br>
     </article>
