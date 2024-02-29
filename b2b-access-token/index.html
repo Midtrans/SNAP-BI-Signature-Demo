@@ -139,13 +139,18 @@ var generateSignature = function(evt){
   var combinedStringToSign = document.querySelector('#appendedString').value;
   
   // generate signature
-  var sigObject = new KJUR.crypto.Signature({ alg: "SHA256withRSA" });
-  sigObject.init(privateKeyString);
-  sigObject.updateString(combinedStringToSign);
-  var signatureHex = sigObject.sign();
-  // the result was in Hex format, convert it into Base64 String format
-  var signatureString = hextob64(signatureHex);
-  console.log(signatureHex, signatureString);
+  try {
+    var sigObject = new KJUR.crypto.Signature({ alg: "SHA256withRSA" });
+    sigObject.init(privateKeyString);
+    sigObject.updateString(combinedStringToSign);
+    var signatureHex = sigObject.sign();
+    // the result was in Hex format, convert it into Base64 String format
+    var signatureString = hextob64(signatureHex);
+  } catch (err){
+    console.error(err);
+    alert('Fail to generate signature! Likely due to invalid input.');
+    return false;
+  }
 
 	// output
   document.querySelector('#outputString').value = signatureString
