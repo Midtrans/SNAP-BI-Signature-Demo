@@ -35,6 +35,8 @@ u256RIyMB13qIuqrc91Z0hM=
 var clientKeyString = "G1234325-SNAP";
 // Generate current X-TIMESTAMP in ISO format
 var timestampString = (new Date()).toISOString();
+// Sample hardcoded timestamp value
+// timestampString = "2024-03-01T08:27:49.024Z";
 var combinedStringToSign = clientKeyString + "|" + timestampString;
 
 /*-- SIGNATURE GENERATION --*/
@@ -48,6 +50,9 @@ console.log("signatureString:");
 console.log(signatureString);
 // Next, this signatureString is the value to be used as `X-SIGNATURE` HTTP headers.
 
+/* Sample signatureString: 
+WzW49tYIgKIBmBi/gVBHGLAkhEaZlXM11zcZxAiyHji6TLPjPbwLu3Z45it25AIeG0XDItcdTSkds47zFEMh6IP0PXPIP1+Ey4RmX/o2fuYRF/xBHvfvKnMmANMTS1axsXBSW3EHqYpbVrkCcqNnB3u+wu63us9WIhRZaWgxgQ2PJLaiVHIwgu9u7jxkWX7Bg4rerZH3RKdQfIJAAJsSN13efR7VdSAyzU7QaKjgislxrLqmesYNJkbD03XLjHdo6YWuzAVV7xdZRpLiGkIAkW7luXTBZYBO+4oENZAPQYzrLeN1qRY1Sr7BgLONCA2QA26BB6SYW4R7qofS9+RyOQ==
+*/
 
 /* 
 // -- Alternative Signature Generation using another module --
