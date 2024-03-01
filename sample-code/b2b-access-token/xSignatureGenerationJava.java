@@ -34,7 +34,7 @@ public class Main {
     signature.update(combinedStringToSign.getBytes());
     // Generate the signature bytes
     byte[] signatureBytes = signature.sign();
-    // To convert to String, encode the bytes in base64
+    // To convert to readable String, base64 encode the bytes
     String signatureString = Base64.getEncoder().encodeToString(signatureBytes);
 
     /*-- OUTPUT --*/
