@@ -3,35 +3,17 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1"> 
-  <title>SHA512 Calculator</title>
-  <link rel="stylesheet" href="https://unpkg.com/spectre.css/dist/spectre.min.css">
-  <link rel="stylesheet" href="https://unpkg.com/spectre.css/dist/spectre-exp.min.css">
-  <link rel="stylesheet" href="https://unpkg.com/spectre.css/dist/spectre-icons.min.css">
-  <style>
-    pre{
-      font-size:60%;
-      word-break: break-all;
-      white-space: pre-wrap;
-    }
-    input, textarea{
-      width: 50%;
-      font-size: 80%;
-    }
-    @media only screen and (max-width: 768px) {
-      input, textarea{
-        width: 80%;
-      }
-    }
-  </style>
+  <title>SHA256withRSA Signature Demo</title>
+  <link rel="icon" href="https://via.placeholder.com/70x70" />
+  <link rel="stylesheet" href="https://unpkg.com/mvp.css" />  
 </head>
 <body>
-  <div class="container">
+  <main class="container">
     <article>
       <br>
-      <h4>SHA256withRSA Signature Calculator Tool</h4>
-      <h5>Input:</h5>
+      <h2>SHA256withRSA Signature Demo</h2>
       <form id="mainForm" onsubmit="generateSignature(); return false">
-        <label>PrivateKey:</label><br>
+        <label>PrivateKey:</label>
         <!-- NOTE: This is sample Private Key from Midtrans Docs, it is intended as publicly visible -->
         <textarea name="inputString" id="privateKey" rows="5">
 -----BEGIN PRIVATE KEY-----
@@ -61,45 +43,44 @@ TEs/J6HDxFOC8Q8ow4COUUwmbCOY90lQXAiRK1b1AoGAScK1db9X5Ct+JtnjYyzi
 GYLwyPhHCQIVmEDfuvbMs74woQsrBm3dBB3b2vf9pqcSZB4WAbTQ3wCdxCJKg6MN
 6eXBO1M1lcIpZjCDyiXXi7PozNmkasRDUyDFwxlnyDLdRHL3FD+dh6do32FwGLBQ
 u256RIyMB13qIuqrc91Z0hM=
------END PRIVATE KEY-----</textarea><br>
+-----END PRIVATE KEY-----</textarea>
 
-        <label>X-CLIENT-KEY</label><br>
-        <input onkeyup="appendInputString();" id="xClientKey" type="text" value="G1234325-SNAP"><br>
-        <label>X-TIMESTAMP <small>(if needed, <a href="#" onclick="generateCurrentTimestampAndOutput();">click here to generate current timestamp</a> )</small></label><br>
-        <input onkeyup="appendInputString();" id="xTimestamp" type="text" value=""><br>
-        <br><br>
+        <label>X-CLIENT-KEY</label>
+        <input onkeyup="appendInputString();" id="xClientKey" type="text" value="G1234325-SNAP">
+        <label>X-TIMESTAMP <small>(if needed, <a href="#" onclick="generateCurrentTimestampAndOutput();">click here to generate current timestamp</a> )</small></label>
+        <input onkeyup="appendInputString();" id="xTimestamp" type="text" value="">
+        <br>
         <label>Appended String ( <code>X-CLIENT-KEY+"|"+X-TIMESTAMP</code> ):</label>
-        <br>
+
         <textarea name="appendedString" id="appendedString" rows="2"></textarea>
-        <br>
         <input class="btn btn-primary" type="submit" value="Generate Signature">
       </form>
-      <br>
+      
     </article>
     <hr>
 
     <article>
-      <br>
+      
       <h5>SHA256withRSA Signature Result:</h5>
       <textarea name="outputString" id="outputString" rows="8" disabled></textarea>
-      <br>
+      
       <p><small>Next, this is the value to be used as `X-SIGNATURE` HTTP headers.</small></p>
     </article>
     <hr>
 
     <article>
-      <br>
-      <h5>Signature Formula:</h5>
+      
+      <h4>Signature Formula:</h4>
       <ul>
         <li><a href="https://docs.midtrans.com/reference/signature-generation#asymmetric-signature-sha256withrsa">Reference</a></li>
       </ul>
 
-      <h5>Sample Codes:</h5>
+      <h4>Sample Signature Generation Implementation Code:</h4>
       <ul>
         <li><a href="https://github.com/Midtrans/SNAP-BI-Signature-Demo/blob/main/sample-code/b2b-access-token/signatureGenerationNode.js">Javascript (NodeJS)</a></li>
       </ul>
 
-      <br>
+      
     </article>
     <hr>
 <!--     
