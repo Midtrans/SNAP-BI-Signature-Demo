@@ -12,7 +12,7 @@
     <article>
       <br>
       <h2>SHA256withRSA Signature Demo</h2>
-      <form id="mainForm" onsubmit="generateSignature(); return false">
+      <form id="mainForm" onsubmit="generateSignature(event); return false">
         <label>PrivateKey:</label>
         <!-- NOTE: This is sample Private Key from Midtrans Docs, it is intended as publicly visible -->
         <textarea name="inputString" id="privateKey" rows="5">
@@ -54,16 +54,13 @@ u256RIyMB13qIuqrc91Z0hM=
 
         <textarea name="appendedString" id="appendedString" rows="2"></textarea>
         <input class="btn btn-primary" type="submit" value="Generate Signature">
-      </form>
-      
+      </form>      
     </article>
     <hr>
 
     <article>
-      
       <h5>SHA256withRSA Signature Result:</h5>
       <textarea name="outputString" id="outputString" rows="8" disabled></textarea>
-      
       <p><small>Next, this is the value to be used as `X-SIGNATURE` HTTP headers.</small></p>
     </article>
     <hr>
@@ -135,6 +132,11 @@ var generateSignature = function(evt){
 
 	// output
   document.querySelector('#outputString').value = signatureString
+  if(evt){
+    // exec only if function triggered from UI.
+    alert('Success to generate, check the result section below.');
+  }
+  console.log('Signature generated');
   return false;
 }
   
