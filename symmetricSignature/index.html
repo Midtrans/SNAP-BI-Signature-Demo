@@ -14,19 +14,19 @@
       <h2>Symmetric HMAC_SHA512 Signature Demo</h2>
       <form id="mainForm" onsubmit="generateSignature(event); return false">
 
-        <label>Client Secret</label>
+        <label>ClientSecret</label>
         <input onkeyup="processAndAppendInputString();" id="clientSecret" type="text" value="myclientsecret">
 
-        <label>HTTP Method <small>(All in Uppercase)</small></label>
+        <label>HTTPMethod <small>(All in Uppercase)</small></label>
         <input onkeyup="processAndAppendInputString();" id="HTTPMethod" type="text" value="POST">
 
-        <label>Endpoint URL <small>(Relative path. Without API domain prefix. Includes all query params, if any.)</small></label>
+        <label>EndpointUrl <small>(Relative path. Without API domain prefix. Includes all query params, if any.)</small></label>
         <input onkeyup="processAndAppendInputString();" id="endpointUrl" type="text" value="/v1.0/qr/qr-mpm-generate">
 
-        <label>Access Token <small>(Without `Bearer ` prefix)</small></label>
+        <label>AccessToken <small>(Without `Bearer ` prefix)</small></label>
         <input onkeyup="processAndAppendInputString();" id="accessToken" type="text" value="myaccesstoken">
 
-        <label>Request Body <small>(Make sure to input valid JSON format, else it will fail)</small></label>
+        <label>RequestBody <small>(Make sure to input valid JSON format, else it will fail)</small></label>
         <textarea onkeyup="processAndAppendInputString();" name="inputString" id="requestBody" rows="15">
 {
   "partnerReferenceNo": "2020102900000000000001",
@@ -43,7 +43,7 @@
   "validityPeriod": "2009-07-03T12:08:56-07:00"
 }</textarea>
 
-        <label>Timestamp <small>(if needed, <a href="#/" onclick="generateCurrentTimestampAndOutput();">click here to generate current timestamp</a> )</small></label>
+        <label>X-TIMESTAMP<small>(if needed, <a href="#/" onclick="generateCurrentTimestampAndOutput();">click here to generate current timestamp</a> )</small></label>
         <input onkeyup="processAndAppendInputString();" id="timestamp" type="text" value="">
         
         <br>
@@ -60,7 +60,7 @@
           <textarea id="lowerHexSha256MinifiedRequestBody" rows="2"></textarea>
         </details>
 
-        <label>stringToSign= <small>HTTPMethod +":"+ EndpointUrl +":"+ AccessToken +":"+ Lowercase(HexEncode(SHA-256(minify(RequestBody)))) +":"+ Timestamp</small>:</label>
+        <label>stringToSign= <small>HTTPMethod +":"+ EndpointUrl +":"+ AccessToken +":"+ Lowercase(HexEncode(SHA-256(minify(RequestBody)))) +":"+ X-TIMESTAMP</small>:</label>
         <textarea name="appendedString" id="appendedString" rows="4"></textarea>
         
         <input class="btn btn-primary" type="submit" value="Generate Symmetric Signature">
