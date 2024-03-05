@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1"> 
-  <title>SHA256withRSA Signature Demo</title>
+  <title>Asymmetric SHA256withRSA Signature Demo</title>
   <link rel="icon" href="https://via.placeholder.com/70x70" />
   <link rel="stylesheet" href="https://unpkg.com/mvp.css" />  
 </head>
@@ -11,7 +11,7 @@
   <main class="container">
     <article>
       <br>
-      <h2>SHA256withRSA Signature Demo</h2>
+      <h2>Asymmetric SHA256withRSA Signature Demo</h2>
       <form id="mainForm" onsubmit="generateSignature(event); return false">
         <label>PrivateKey:</label>
         <!-- NOTE: This is sample Private Key from Midtrans Docs, it is intended as publicly visible -->
@@ -50,7 +50,7 @@ u256RIyMB13qIuqrc91Z0hM=
         <label>X-TIMESTAMP <small>(if needed, <a href="#/" onclick="generateCurrentTimestampAndOutput();">click here to generate current timestamp</a> )</small></label>
         <input onkeyup="appendInputString();" id="xTimestamp" type="text" value="">
         <br>
-        <label>Appended String ( <code>X-CLIENT-KEY+"|"+X-TIMESTAMP</code> ):</label>
+        <label>stringToSign=<small>X-CLIENT-KEY+"|"+X-TIMESTAMP</small>:</label>
 
         <textarea name="appendedString" id="appendedString" rows="2"></textarea>
         <input class="btn btn-primary" type="submit" value="Generate Signature">
@@ -59,9 +59,9 @@ u256RIyMB13qIuqrc91Z0hM=
     <hr>
 
     <article>
-      <h5>SHA256withRSA Signature Result:</h5>
+      <h5>Asymmetric SHA256withRSA Signature Result=<small>SHA256withRSA(PrivateKey, stringToSign)</small></h5>
       <textarea name="outputString" id="outputString" rows="8" disabled></textarea>
-      <p><small>Next, this is the value to be used as `X-SIGNATURE` HTTP headers.</small></p>
+      <p><small>That will be the value to be used as `X-SIGNATURE` HTTP headers.</small></p>
     </article>
     <hr>
 
