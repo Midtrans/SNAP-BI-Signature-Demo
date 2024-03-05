@@ -28,7 +28,6 @@ var timestampString = (new Date()).toISOString(); // Generate current X-TIMESTAM
 /*-- PERFORM: Lowercase(HexEncode(SHA-256(minify(RequestBody)))) --*/
 // minify the request body, simple way: parse then stringify it back
 var minifiedRequestBody = JSON.stringify(JSON.parse(requestBody));
-console.log("minifiedRequestBody",minifiedRequestBody);
 // create sha256 hash in `hex` format, lowercase
 var lowerHexSha256MinifiedRequestBody = crypto.createHash("sha256")
   .update(minifiedRequestBody)
