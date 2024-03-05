@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1"> 
+  <title>Symmetric HMAC_SHA512 Signature Demo</title>
+  <link rel="icon" href="https://via.placeholder.com/70x70" />
+  <link rel="stylesheet" href="https://unpkg.com/mvp.css" />  
+</head>
+<body>
+  <main class="container">
+    <article>
+      <br>
+      <h2>Symmetric HMAC_SHA512 Signature Demo</h2>
+      <form id="mainForm" onsubmit="generateSignature(event); return false">
+
+        <label>Client Secret</label>
+        <input onkeyup="processAndAppendInputString();" id="clientSecret" type="text" value="myclientsecret">
+
+        <label>HTTP Method <small>(All in Uppercase)</small></label>
+        <input onkeyup="processAndAppendInputString();" id="HTTPMethod" type="text" value="POST">
+
+        <label>Endpoint URL <small>(Relative path. Without API domain prefix. Includes all query params, if any.)</small></label>
+        <input onkeyup="processAndAppendInputString();" id="endpointUrl" type="text" value="/v1.0/qr/qr-mpm-generate">
+
+        <label>Access Token <small>(Without `Bearer ` prefix)</small></label>
+        <input onkeyup="processAndAppendInputString();" id="accessToken" type="text" value="myaccesstoken">
+
+        <label>Request Body <small>(Make sure to input valid JSON format, else it will fail)</small></label>
+        <textarea onkeyup="processAndAppendInputString();" name="inputString" id="requestBody" rows="15">
+{
+  "partnerReferenceNo": "2020102900000000000001",
+  "amount": {
+    "value": "12345678.00",
+    "currency": "IDR"
+  },
+  "feeAmount": {
+    "value": "12345678.00",
+    "currency": "IDR"
+  },
+  "merchantId": "00007100010926",
+  "terminalId": "213141251124",
+  "validityPeriod": "2009-07-03T12:08:56-07:00"
+}</textarea>
+
+        <label>Timestamp <small>(if needed, <a href="#/" onclick="generateCurrentTimestampAndOutput();">click here to generate current timestamp</a> )</small></label>
+        <input onkeyup="processAndAppendInputString();" id="timestamp" type="text" value="">
+        
+        <br>
+        <p><small>Produced from inputs above:</small></p>
+
+        <details>
+          <summary><small>`Request Body` transformation process in details</small></summary>
+
+          <label><small>minify(RequestBody)</small>:</label>
+          <textarea id="minifiedRequestBody" rows="5"></textarea>
+          <label><small>HexEncode(SHA-256(minify(RequestBody)))</small>:</label>
+          <textarea id="hexSha256MinifiedRequestBody" rows="2"></textarea>
+          <label><small>Lowercase(HexEncode(SHA-256(minify(RequestBody))))</small>:</label>
+          <textarea id="lowerHexSha256MinifiedRequestBody" rows="2"></textarea>
+        </details>
+
+        <label>stringToSign= <small>HTTPMethod +":"+ EndpointUrl +":"+ AccessToken +":"+ Lowercase(HexEncode(SHA-256(minify(RequestBody)))) +":"+ Timestamp</small>:</label>
+        <textarea name="appendedString" id="appendedString" rows="4"></textarea>
+        
+        <input class="btn btn-primary" type="submit" value="Generate Symmetric Signature">
+      </form>      
+    </article>
+    <hr>
+
+    <article>
+      <h5>Symmetric HMAC_SHA512 Signature Result= <small>HMAC_SHA512(clientSecret, stringToSign)</small>:</h5>
+      <textarea name="outputString" id="outputString" rows="5" disabled></textarea>
+      <p><small>That will be the value to be used as `X-SIGNATURE` HTTP header.</small></p>
+    </article>
+<!-- 
+    <details open>
+      <summary>Alternative, Asymmetric Signature</summary>
+      <article>
+        <p><small>Alternatively, you can also choose Asymmetric Signature instead, use this is the value to be used as `X-SIGNATURE` HTTP header.</small></p>
+        <h5>Asymmetric Signature Result= <small>SHA256withRSA(clientSecret, stringToSign)</small>:</h5>
+        <textarea name="outputString" id="outputString2" rows="5" disabled></textarea>
+      </article>
+    </details> 
+-->
+
+    <hr>
+
+    <article>
+      
+      <h4>Signature Formula:</h4>
+      <ul>
+        <li><a target="_blank" href="https://docs.midtrans.com/reference/signature-generation#symmetric-signature-hmac_sha512">Reference</a></li>
+      </ul>
+<!-- 
+      <h4>Sample Signature Generation Implementation Code:</h4>
+      <ul>
+        <li><a target="_blank" href="https://github.com/Midtrans/SNAP-BI-Signature-Demo/blob/main/sample-code/asymmetricSignature/xSignatureGenerationNode.js">Javascript (NodeJS)</a></li>
+        <li><a target="_blank" href="https://github.com/Midtrans/SNAP-BI-Signature-Demo/blob/main/sample-code/asymmetricSignature/xSignatureGenerationJava.java">Java</a></li>
+        <li><a target="_blank" href="https://github.com/Midtrans/SNAP-BI-Signature-Demo/blob/main/sample-code/asymmetricSignature/xSignatureGenerationGo.go">Go</a></li>
+      </ul> 
+-->
+      
+    </article>
+    <hr>
+<!--     
+    <div>
+      <h4>Sample Inputs </h4>
+      <pre>
+    ...
+      </pre>
+    </div>
+-->
+  </div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jsrsasign/11.1.0/jsrsasign-all-min.js" integrity="sha512-Eu9j+HZBor7muHf6IDWoWZ8FKVr6nKe9eIIVR28NEte4Y4GiYRlke26XGdR/re81XE/FfLoLYYVkvNk5GY9RvQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  
+  <script>
+/* HELPER SCRIPTS */
+var generateCurrentTimestampString = function(){
+	return (new Date()).toISOString();
+}
+
+var generateCurrentTimestampAndOutput = function(){
+  var el = document.querySelector('#timestamp');
+	el.value = generateCurrentTimestampString();
+  el.dispatchEvent(new Event('keyup'));
+  return false;
+}
+  
+var processAndAppendInputString = function(evt){
+  var HTTPMethod = document.querySelector('#HTTPMethod').value;
+  var endpointUrl = document.querySelector('#endpointUrl').value;
+  var accessToken = document.querySelector('#accessToken').value;
+  var requestBody = document.querySelector('#requestBody').value;
+  var timestamp = document.querySelector('#timestamp').value;
+
+  var minifiedRequestBody = JSON.stringify(JSON.parse(requestBody));
+  var md = new KJUR.crypto.MessageDigest({alg: "sha256", prov: "cryptojs"});
+  md.updateString(minifiedRequestBody);
+  var hexSha256MinifiedRequestBody = md.digest(); //digest() result is already in Hex
+  var lowerHexSha256MinifiedRequestBody = hexSha256MinifiedRequestBody.toLowerCase();
+
+  var appendedStringToSign = 
+    HTTPMethod.toUpperCase()+":"+
+    endpointUrl+":"+
+    accessToken+":"+
+    lowerHexSha256MinifiedRequestBody+":"+
+    timestamp;
+
+  document.querySelector('#minifiedRequestBody').value = minifiedRequestBody;
+  document.querySelector('#hexSha256MinifiedRequestBody').value = hexSha256MinifiedRequestBody;
+  document.querySelector('#lowerHexSha256MinifiedRequestBody').value = lowerHexSha256MinifiedRequestBody;
+  document.querySelector('#appendedString').value = appendedStringToSign;
+}
+
+var generateSymmetricSignature = function(){
+  // input
+  var clientSecret = document.querySelector('#clientSecret').value;
+  var combinedStringToSign = document.querySelector('#appendedString').value;
+  
+  // generate Mac signature
+  try {
+    var macObject = new KJUR.crypto.Mac({ alg: "hmacsha512", "pass": clientSecret });
+    macObject.updateString(combinedStringToSign);
+    var macSignatureHex = macObject.doFinal();
+    // the result was in Hex format, convert it into Base64 String format
+    var macSignatureString = hextob64(macSignatureHex);
+    console.log('Mac Signature generated');
+  } catch (err){
+    console.error(err);
+    alert('Fail to generate Mac signature! Likely due to invalid input.');
+    return false;
+  }
+
+	// output
+  document.querySelector('#outputString').value = macSignatureString;
+};
+
+/*
+var generateAsymmetricSignature = function(){ // not currently working, sigObject.init require PEM private key
+  // input
+  var clientSecret = document.querySelector('#clientSecret').value;
+  var combinedStringToSign = document.querySelector('#appendedString').value;
+  
+  // generate Mac signature
+  try {
+    var sigObject = new KJUR.crypto.Signature({ alg: "SHA256withRSA" });
+    sigObject.init(clientSecret);
+    sigObject.updateString(combinedStringToSign);
+    var signatureHex = sigObject.sign();
+    // the result was in Hex format, convert it into Base64 String format
+    var signatureString = hextob64(signatureHex);
+  } catch (err){
+    console.error(err);
+    alert('Fail to generate SHA signature! Likely due to invalid input.');
+    return false;
+  }
+
+	// output
+  document.querySelector('#outputString2').value = signatureString;
+};
+*/
+    
+var generateSignature = function(evt){
+  generateSymmetricSignature();
+  // generateAsymmetricSignature(); // not currently working
+  if(evt){
+    // exec only if function triggered from UI.
+    alert('Success to generate, check the result section below.');
+  }
+  return false;
+}
+  
+/* MAIN SCRIPT, RUN ON PAGE LOAD */
+var main = function(){
+	generateCurrentTimestampAndOutput();
+  processAndAppendInputString();
+  generateSignature();
+};
+main();
+  </script>
+</body>
+</html>
