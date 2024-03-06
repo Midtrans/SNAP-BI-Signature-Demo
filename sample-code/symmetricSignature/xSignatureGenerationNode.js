@@ -3,7 +3,7 @@ var crypto = require("crypto");
 
 /*-- INPUT --*/
 var clientSecret = "myclientsecret";
-var HTTPMethod = ("POST").toUpperCase(); // ensure all UPPERCASE
+var HTTPMethod = "POST".toUpperCase(); // ensure all UPPERCASE
 var endpointUrl = "/v1.0/qr/qr-mpm-generate";
 var accessToken = "myaccesstoken"; // without the `Bearer ` prefix
 // ensure requestBody is a valid JSON string format, don't worry about whitespace, we'll clean up later
@@ -35,7 +35,7 @@ var lowerHexSha256MinifiedRequestBody = crypto.createHash("sha256")
   .toLowerCase();
 
 var combinedStringToSign = 
-  HTTPMethod.toUpperCase()+":"+
+  HTTPMethod+":"+
   endpointUrl+":"+
   accessToken+":"+
   lowerHexSha256MinifiedRequestBody+":"+
@@ -51,7 +51,7 @@ console.log("xSignatureString:");
 console.log(xSignatureString);
 // Next, this xSignatureString is the value to be used as `X-SIGNATURE` HTTP headers.
 
-/* Sample signatureString: 
+/* Sample xSignatureString: 
 wmzT7yjg1SxxCsxNsFgCR9SYXiZGGbceF6fV8xe97sAMHxZ+7OEBMIBmvb6Sj6GcksGp3iv77DiomgSbcST3XQ==
 */
 
@@ -59,7 +59,6 @@ wmzT7yjg1SxxCsxNsFgCR9SYXiZGGbceF6fV8xe97sAMHxZ+7OEBMIBmvb6Sj6GcksGp3iv77DiomgSb
 // -- Alternative Signature Generation using another module --
 // `npm i jsrsasign` to import https://www.npmjs.com/package/jsrsasign
 var jsrsasign = require("jsrsasign");
-
 var macObject = new jsrsasign.KJUR.crypto.Mac({ alg: "hmacsha512", "pass": clientSecret });
 macObject.updateString(combinedStringToSign);
 var macSignatureHex = macObject.doFinal();

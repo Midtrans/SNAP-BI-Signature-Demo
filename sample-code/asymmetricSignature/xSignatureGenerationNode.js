@@ -41,16 +41,16 @@ var combinedStringToSign = clientKeyString + "|" + timestampString;
 
 /*-- SIGNATURE GENERATION --*/
 var myPrivateKey = crypto.createPrivateKey({ key: privateKeyString, format: 'pem' });
-var signatureString = crypto.createSign('RSA-SHA256')
+var xSignatureString = crypto.createSign('RSA-SHA256')
   .update(combinedStringToSign)
   .sign(myPrivateKey, 'base64');
 
 /*-- OUTPUT --*/
-console.log("signatureString:");
-console.log(signatureString);
-// Next, this signatureString is the value to be used as `X-SIGNATURE` HTTP headers.
+console.log("xSignatureString:");
+console.log(xSignatureString);
+// Next, this xSignatureString is the value to be used as `X-SIGNATURE` HTTP headers.
 
-/* Sample signatureString: 
+/* Sample xSignatureString: 
 WzW49tYIgKIBmBi/gVBHGLAkhEaZlXM11zcZxAiyHji6TLPjPbwLu3Z45it25AIeG0XDItcdTSkds47zFEMh6IP0PXPIP1+Ey4RmX/o2fuYRF/xBHvfvKnMmANMTS1axsXBSW3EHqYpbVrkCcqNnB3u+wu63us9WIhRZaWgxgQ2PJLaiVHIwgu9u7jxkWX7Bg4rerZH3RKdQfIJAAJsSN13efR7VdSAyzU7QaKjgislxrLqmesYNJkbD03XLjHdo6YWuzAVV7xdZRpLiGkIAkW7luXTBZYBO+4oENZAPQYzrLeN1qRY1Sr7BgLONCA2QA26BB6SYW4R7qofS9+RyOQ==
 */
 
@@ -59,11 +59,10 @@ WzW49tYIgKIBmBi/gVBHGLAkhEaZlXM11zcZxAiyHji6TLPjPbwLu3Z45it25AIeG0XDItcdTSkds47z
 // `npm i jsrsasign`
 // to import https://www.npmjs.com/package/jsrsasign
 var jsrsasign = require("jsrsasign");
-
 var sigObject = new jsrsasign.KJUR.crypto.Signature({ alg: "SHA256withRSA" });
 sigObject.init(privateKeyString);
 sigObject.updateString(combinedStringToSign);
 var signatureHex = sigObject.sign();
 // the result was in Hex format, convert it into Base64 String format
-var signatureString = Buffer.from(signatureHex, "hex").toString("base64");
+var xSignatureString = Buffer.from(signatureHex, "hex").toString("base64");
 */

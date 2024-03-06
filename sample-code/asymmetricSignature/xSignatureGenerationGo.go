@@ -83,14 +83,14 @@ u256RIyMB13qIuqrc91Z0hM=
 		return
 	}
 	// To convert to readable String, base64 encode the bytes
-	signatureString := base64.StdEncoding.EncodeToString(signature)
+	xSignatureString := base64.StdEncoding.EncodeToString(signature)
 
 	/*-- OUTPUT --*/
-	fmt.Println("signatureString:")
-	fmt.Println(signatureString)	
-	// Next, this signatureString is the value to be used as `X-SIGNATURE` HTTP headers.
+	fmt.Println("xSignatureString:")
+	fmt.Println(xSignatureString)	
+	// Next, this xSignatureString is the value to be used as `X-SIGNATURE` HTTP headers.
 
-	/* Sample signatureString: 
+	/* Sample xSignatureString: 
 WzW49tYIgKIBmBi/gVBHGLAkhEaZlXM11zcZxAiyHji6TLPjPbwLu3Z45it25AIeG0XDItcdTSkds47zFEMh6IP0PXPIP1+Ey4RmX/o2fuYRF/xBHvfvKnMmANMTS1axsXBSW3EHqYpbVrkCcqNnB3u+wu63us9WIhRZaWgxgQ2PJLaiVHIwgu9u7jxkWX7Bg4rerZH3RKdQfIJAAJsSN13efR7VdSAyzU7QaKjgislxrLqmesYNJkbD03XLjHdo6YWuzAVV7xdZRpLiGkIAkW7luXTBZYBO+4oENZAPQYzrLeN1qRY1Sr7BgLONCA2QA26BB6SYW4R7qofS9+RyOQ==
 	*/
 }

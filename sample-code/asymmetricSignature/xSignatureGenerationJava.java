@@ -35,14 +35,14 @@ public class Main {
     // Generate the signature bytes
     byte[] signatureBytes = signature.sign();
     // To convert to readable String, base64 encode the bytes
-    String signatureString = Base64.getEncoder().encodeToString(signatureBytes);
+    String xSignatureString = Base64.getEncoder().encodeToString(signatureBytes);
 
     /*-- OUTPUT --*/
-    System.out.println("signatureString: ");
-    System.out.println(signatureString);
-    // Next, this signatureString is the value to be used as `X-SIGNATURE` HTTP headers.
+    System.out.println("xSignatureString: ");
+    System.out.println(xSignatureString);
+    // Next, this xSignatureString is the value to be used as `X-SIGNATURE` HTTP headers.
 
-    /* Sample signatureString: 
+    /* Sample xSignatureString: 
 WzW49tYIgKIBmBi/gVBHGLAkhEaZlXM11zcZxAiyHji6TLPjPbwLu3Z45it25AIeG0XDItcdTSkds47zFEMh6IP0PXPIP1+Ey4RmX/o2fuYRF/xBHvfvKnMmANMTS1axsXBSW3EHqYpbVrkCcqNnB3u+wu63us9WIhRZaWgxgQ2PJLaiVHIwgu9u7jxkWX7Bg4rerZH3RKdQfIJAAJsSN13efR7VdSAyzU7QaKjgislxrLqmesYNJkbD03XLjHdo6YWuzAVV7xdZRpLiGkIAkW7luXTBZYBO+4oENZAPQYzrLeN1qRY1Sr7BgLONCA2QA26BB6SYW4R7qofS9+RyOQ==
     */
   }
