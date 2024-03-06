@@ -21,19 +21,19 @@ func main() {
 	accessToken := "myaccesstoken"
 	// ensure requestBody is a valid JSON string format, dont worry about whitespaces, it will be minified later
 	requestBody := `{
-        "partnerReferenceNo": "2020102900000000000001",
-        "amount": {
-            "value": "12345678.00",
-            "currency": "IDR"
-        },
-        "feeAmount": {
-            "value": "12345678.00",
-            "currency": "IDR"
-        },
-        "merchantId": "00007100010926",
-        "terminalId": "213141251124",
-        "validityPeriod": "2009-07-03T12:08:56-07:00"
-    }`
+		"partnerReferenceNo": "2020102900000000000001",
+		"amount": {
+			"value": "12345678.00",
+			"currency": "IDR"
+		},
+		"feeAmount": {
+			"value": "12345678.00",
+			"currency": "IDR"
+		},
+		"merchantId": "00007100010926",
+		"terminalId": "213141251124",
+		"validityPeriod": "2009-07-03T12:08:56-07:00"
+	}`
 	timestampString := time.Now().UTC().Format(time.RFC3339Nano)
 	// sample hardcoded timestamp value
 	// timestampString = "2024-03-05T10:37:16.196Z"
@@ -68,8 +68,7 @@ func minifyRequestBody(jsonString string) string {
 	if err := json.Compact(dst, []byte(jsonString)); err != nil {
 		panic(err)
 	}
-	minifiedJson := dst.String()
-	return string(minifiedJson)
+	return dst.String()
 }
 
 func sha256Hex(input string) string {

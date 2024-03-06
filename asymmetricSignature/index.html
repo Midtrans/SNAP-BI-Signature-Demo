@@ -56,11 +56,11 @@ u256RIyMB13qIuqrc91Z0hM=
         <input class="btn btn-primary" type="submit" value="Generate Signature">
       </form>      
     </article>
-    <hr>
+    <!-- <hr> -->
 
     <article>
       <h5>Asymmetric SHA256withRSA Signature Result=<small>SHA256withRSA(PrivateKey, stringToSign)</small></h5>
-      <textarea name="outputString" id="outputString" rows="8" disabled></textarea>
+      <textarea name="outputString" id="outputString" rows="8" disabled>Click btn above to generate...</textarea>
       <p><small>That will be the value to be used as `X-SIGNATURE` HTTP headers.</small></p>
     </article>
     <hr>
@@ -148,7 +148,7 @@ var generateSignature = function(evt){
 var main = function(){
 	generateCurrentTimestampAndOutput();
   appendInputString();
-  generateSignature();
+  // generateSignature();
 };
 main();
   </script>
