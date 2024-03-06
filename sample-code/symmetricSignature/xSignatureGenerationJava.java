@@ -12,7 +12,7 @@ public class Main {
   public static void main(String[] args) throws Exception {
     /*-- INPUT --*/
     String clientSecret = "myclientsecret";
-    String httpMethod = "POST".toUpperCase();
+    String httpMethod = "POST".toUpperCase(); // ensure all UPPERCASE
     String endpointUrl = "/v1.0/qr/qr-mpm-generate";
     String accessToken = "myaccesstoken";
     // ensure requestBody is a valid JSON string format, dont worry about whitespaces, it will be minified later
@@ -38,6 +38,11 @@ public class Main {
     /*-- OUTPUT --*/
     System.out.println("xSignatureString:");
     System.out.println(xSignatureString);
+    // Next, this xSignatureString is the value to be used as `X-SIGNATURE` HTTP headers.
+
+    /* Sample xSignatureString: 
+wmzT7yjg1SxxCsxNsFgCR9SYXiZGGbceF6fV8xe97sAMHxZ+7OEBMIBmvb6Sj6GcksGp3iv77DiomgSbcST3XQ==
+    */
   }
 
   private static String minifyRequestBody(String requestBody) throws JsonProcessingException {
