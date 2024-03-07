@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1"> 
+  <title>Asymmetric SHA256withRSA seamlessSign Demo for </title>
+  <link rel="icon" href="https://via.placeholder.com/70x70" />
+  <link rel="stylesheet" href="https://unpkg.com/mvp.css" />  
+</head>
+<body>
+  <main class="container">
+    <article>
+      <br>
+      <h2>Asymmetric SHA256withRSA seamlessSign Demo</h2>
+      <form id="mainForm" onsubmit="generateSignature(event); return false">
+        <label>PrivateKey:</label>
+        <!-- NOTE: This is sample Private Key from Midtrans Docs, it is intended as publicly visible -->
+        <textarea name="inputString" id="privateKey" rows="5">
+-----BEGIN PRIVATE KEY-----
+MIIBVQIBADANBgkqhkiG9w0BAQEFAASCAT8wggE7AgEAAkEAlas/ul92ZfLV8cxf
+k7kQU0V41Sp9RlDylXTTmUv92scPyVsTRQSN8RpSe/DKvZfdm+mWd2wYhPz14cg2
+IhQNJwIDAQABAkAB80dTUGckkPOEwRsFu8WgsCkQ7grP3cIrfGg9eSYHscdCiNsD
+ZbChg7FGbyUwMhfTRgfsRlE5qBGR9X6p9yKBAiEAyIML9J/JYsoTBeaxbJYg13Kq
+/FKrBkAzG34tcdYylKECIQC/Fk/a0pWwfKoik+wlZW6f1MDw++n9Sv7X+5D80HAE
+xwIhALfQ6zTnBwe5mJbgVebl+lWImZeXcZHZaQDbO24Qn24BAiEAs7UGEKMvR7VW
+RAKdeWX1LbdmZLxliGK5XOInrrtQPg0CICEW4K0j0wYS+kca2yX5y3qbLWE0EttN
+Rocmtyw5WnLB
+-----END PRIVATE KEY-----</textarea>
+
+        <label>raw SeamlessData <small>(before encoded)</small></label>
+        <input onkeyup="encodeInputString();" id="rawSeamlessData" type="text" value="mobileNumber=6281234000001&paymentType=gopay">
+        <br>
+        <label>Preview of string to be signed: <small>seamlessData=URLEncode(rawSeamlessData)</small>:</label>
+        <textarea id="stringToSign" rows="2"></textarea>
+
+        <input class="btn btn-primary" type="submit" value="Generate Signature">
+      </form>      
+    </article>
+    <!-- <hr> -->
+
+    <article>
+      <h5>URLEncoded seamlessSign=<small>URLEncode( SHA256withRSA(PrivateKey, seamlessData) )</small></h5>
+      <textarea name="outputString" id="outputString" rows="8" disabled>Click btn above to generate...</textarea>
+      <p><small>That will be the value to be used as `seamlessSign` URL Query Parameter.</small></p>
+
+      <details>
+        <summary>Process details</summary>
+        <label>raw unencoded seamlessSign:</label>
+        <textarea id="seamlessSign" rows="2" disabled>Click btn above to generate...</textarea>
+      </details>
+    </article>
+    <hr>
+
+    <article>
+<!-- 
+      <h4>Signature Formula:</h4>
+      <ul>
+        <li><a target="_blank" href="https://docs.midtrans.com/reference/signature-generation#asymmetric-signature-sha256withrsa">Reference</a></li>
+      </ul>
+ -->
+      
+      <h4>Sample Signature Generation Implementation Code:</h4>
+      <ul>
+        <li><a target="_blank" href="https://github.com/Midtrans/SNAP-BI-Signature-Demo/blob/main/sample-code/asymmetricSignatureSamlessSign/seamlessSignGenerationNode.js">Javascript (NodeJS)</a></li>        
+<!--       
+        <li>Auto converted using AI <small>(*may not be accurate, but quite helpful)</small>:
+          <ul>
+            <li><a href="https://g.co/gemini/share/2f4f5864b424" target="_blank" rel="noopener noreferrer">Python</a></li>
+            <li><a href="https://g.co/gemini/share/6276ffc073d2" target="_blank" rel="noopener noreferrer">Ruby</a></li>
+          </ul>
+        </li>
+        <li>Tips:
+          <ul>
+            <li>You can also convert to your preferred Language(s) by using your preferred AI (for example, Google Gemini is used above)</li>
+            <li>You can also ask AI to explain any piece of the example code to help you understand. <a href="https://g.co/gemini/share/d4c066729ee0" target="_blank" rel="noopener noreferrer">For example.</a></li>
+          </ul>
+        </li>
+-->
+      </ul> 
+
+      
+    </article>
+    <hr>
+<!--     
+    <div>
+      <h4>Sample Inputs </h4>
+      <pre>
+    ...
+      </pre>
+    </div>
+-->
+  </div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jsrsasign/11.1.0/jsrsasign-all-min.js" integrity="sha512-Eu9j+HZBor7muHf6IDWoWZ8FKVr6nKe9eIIVR28NEte4Y4GiYRlke26XGdR/re81XE/FfLoLYYVkvNk5GY9RvQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  
+  <script>
+/* HELPER SCRIPTS */
+  
+var encodeInputString = function(evt){
+  document.querySelector('#stringToSign').value = 
+    encodeURIComponent(document.querySelector('#rawSeamlessData').value);
+}
+    
+var generateSignature = function(evt){
+  // input
+  var inputStr = document.querySelector('#stringToSign').value
+  var privateKeyString = document.querySelector('#privateKey').value;
+  var stringToSign = document.querySelector('#stringToSign').value;
+  
+  // generate signature
+  try {
+    var sigObject = new KJUR.crypto.Signature({ alg: "SHA256withRSA" });
+    sigObject.init(privateKeyString);
+    sigObject.updateString(stringToSign);
+    var signatureHex = sigObject.sign();
+    // the result was in Hex format, convert it into Base64 String format
+    var signatureString = hextob64(signatureHex);
+  } catch (err){
+    console.error(err);
+    alert('Fail to generate signature! Likely due to invalid input.');
+    return false;
+  }
+
+	// output
+  document.querySelector('#outputString').value = encodeURIComponent(signatureString);
+  document.querySelector('#seamlessSign').value = signatureString;
+  if(evt){
+    // exec only if function triggered from UI.
+    alert('Success to generate, check the result section below.');
+  }
+  console.log('Signature generated');
+  return false;
+}
+  
+/* MAIN SCRIPT, RUN ON PAGE LOAD */
+var main = function(){
+  encodeInputString();
+  // generateSignature();
+};
+main();
+  </script>
+</body>
+</html>
