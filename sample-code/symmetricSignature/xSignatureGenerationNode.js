@@ -26,8 +26,11 @@ var timestampString = (new Date()).toISOString(); // Generate current X-TIMESTAM
 // timestampString = "2024-03-05T10:37:16.196Z"
 
 /*-- PERFORM: Lowercase(HexEncode(SHA-256(minify(RequestBody)))) --*/
-// minify the request body, simple way: parse then stringify it back
-var minifiedRequestBody = JSON.stringify(JSON.parse(requestBody));
+var minifiedRequestBody = ""; // default to empty string, e.g. when there is no requestBody
+if(requestBody.length > 0){
+  // minify the request body, simple way: parse then stringify it back
+  var minifiedRequestBody = JSON.stringify(JSON.parse(requestBody));
+}
 // create sha256 hash in `hex` format, lowercase
 var lowerHexSha256MinifiedRequestBody = crypto.createHash("sha256")
   .update(minifiedRequestBody)

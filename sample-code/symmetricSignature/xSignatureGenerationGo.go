@@ -63,12 +63,16 @@ func main() {
 }
 
 func minifyRequestBody(jsonString string) string {
-	// minify using https://pkg.go.dev/encoding/json#Compact
-	dst := &bytes.Buffer{}
-	if err := json.Compact(dst, []byte(jsonString)); err != nil {
-		panic(err)
+	minifiedRequestBody := ""  // default to empty string, e.g. when there is no requestBody
+	if len(jsonString) > 0 {
+		// minify using https://pkg.go.dev/encoding/json#Compact
+		dst := &bytes.Buffer{}
+		if err := json.Compact(dst, []byte(jsonString)); err != nil {
+			panic(err)
+		}
+		minifiedRequestBody = dst.String()
 	}
-	return dst.String()
+	return minifiedRequestBody
 }
 
 func sha256Hex(input string) string {

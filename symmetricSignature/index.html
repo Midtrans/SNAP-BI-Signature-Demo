@@ -148,8 +148,16 @@ var processAndAppendInputString = function(evt){
   var requestBody = document.querySelector('#requestBody').value;
   var timestamp = document.querySelector('#timestamp').value;
   
-  var minifiedRequestBody = JSON.stringify(JSON.parse(requestBody));
-      var md = new KJUR.crypto.MessageDigest({alg: "sha256", prov: "cryptojs"});
+  var minifiedRequestBody = ""; // default value to handle empty requestBody in scenario like GET
+  if(requestBody.length > 0){
+    try {
+      minifiedRequestBody = JSON.stringify(JSON.parse(requestBody));
+    } catch (err){ 
+      console.error(err); 
+      alert('Fail to minify requestBody as JSON. Please re-check requestBody input. - '+ err); 
+    }
+  }
+  var md = new KJUR.crypto.MessageDigest({alg: "sha256", prov: "cryptojs"});
   md.updateString(minifiedRequestBody);
   var hexSha256MinifiedRequestBody = md.digest(); //digest() result is already in Hex
   var lowerHexSha256MinifiedRequestBody = hexSha256MinifiedRequestBody.toLowerCase();

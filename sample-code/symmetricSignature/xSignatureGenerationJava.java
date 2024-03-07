@@ -22,7 +22,7 @@ public class Main {
     // timestampString = "2024-03-05T10:37:16.196Z";
 
     /*-- PERFORM: Lowercase(HexEncode(SHA-256(minify(RequestBody)))) --*/
-    String minifiedRequestBody = minifyRequestBody(requestBody);
+    String minifiedRequestBody = minifyRequestBodyJSON(requestBody);
     String lowerHexSha256MinifiedRequestBody = sha256Hex(minifiedRequestBody).toLowerCase();
 
     String combinedStringToSign = 
@@ -45,11 +45,15 @@ wmzT7yjg1SxxCsxNsFgCR9SYXiZGGbceF6fV8xe97sAMHxZ+7OEBMIBmvb6Sj6GcksGp3iv77DiomgSb
     */
   }
 
-  private static String minifyRequestBody(String requestBody) throws JsonProcessingException {
-    // simple way: map JSON string as JSON Object then convert back to string, it will remove unnecessary whitespaces
-    return (new ObjectMapper())
+  private static String minifyRequestBodyJSON(String requestBody) throws JsonProcessingException {
+    String minifiedRequestBody = ""; // default to empty string, e.g. when there is no requestBody
+    if(requestBody.length() > 0){
+      minifiedRequestBody = (new ObjectMapper())
         .readTree(requestBody)
         .toString();
+    }
+    // simple way: map JSON string as JSON Object then convert back to string, it will remove unnecessary whitespaces
+    return minifiedRequestBody;
   }
 
   private static String bytesToHex(byte[] bytes) {
