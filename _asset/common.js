@@ -1,0 +1,104 @@
+function _loadExternalJS(FILE_URL = "", async = true, type = "text/javascript"){
+	// src: https://www.educative.io/answers/how-to-dynamically-load-a-js-file-in-javascript
+	return new Promise((resolve, reject) => {
+		try {
+			var scriptEle = document.createElement("script");
+			scriptEle.type = type;
+			scriptEle.async = async;
+			scriptEle.src =FILE_URL;
+
+			scriptEle.addEventListener("load", (ev) => {
+				resolve({ status: true });
+			});
+
+			scriptEle.addEventListener("error", (ev) => {
+				reject({
+					status: false,
+					message: `Failed to load the script ${FILE_URL}`
+				});
+			});
+
+			document.body.appendChild(scriptEle);
+		} catch (error) {
+			reject(error);
+		}
+	});
+};
+
+function _initScanLinkSharerInputs() {
+  window._linkSharer = {};
+	window._linkSharer.inputEls = Array.from(
+      document.querySelectorAll('[data-link-sharer]')
+    );
+}
+
+function _convertInputsToJSON(inputs){
+  var json = {};
+  inputs.map(function(el){
+    if(el){
+      json[el.id] = el.value;
+    }
+  })
+  return json;
+}
+
+function _generateSharableUrlOutput(elSelector){
+  /**
+   * for this to work, add attribute `data-link-sharer="any"` to any inputs you targeted
+   */
+  var inputsJson = _convertInputsToJSON(window._linkSharer.inputEls);
+  var jsonCompressor = JsonUrl('lzw');
+  jsonCompressor.compress(inputsJson)
+    .then(function(encodedCompressedJson){
+      var sharableUrl = window.location.href + '?s=' + encodedCompressedJson;
+      if(sharableUrl.length > 2000){
+        alert('Fail to generate Sharable URL, URL max length 2000 char exceeded!');
+        return false;
+      }
+      document.querySelector(elSelector).value = sharableUrl;
+    });
+}
+
+function _insertSharableFormElementToHTML(){
+  var mainEl = document.querySelector('main') ?? document.querySelector('body');
+  mainEl.insertAdjacentHTML(
+    "beforeend",
+    `
+  <details open>
+    <summary>Sharable URL</summary>
+    <article>
+      <label><a onclick="_generateSharableUrlOutput('#sharableUrl');" href="#/">Generate Sharable URL:</a></label>
+      <input type="text" id="sharableUrl" placeholder="Click above to generate...">
+      <p><small>Copy the URL value. This URL when opened will auto-fill the form with the exact same value as you have above.</small></p>
+    </article>
+  </details>
+    `
+  );
+}
+
+function _restoreFromSQueryParamToInputValues(){
+  var urlParams = new URLSearchParams(window.location.search);
+  var encodedCompressedInputsJson = urlParams.get('s');
+  if(encodedCompressedInputsJson){
+    var jsonCompressor = JsonUrl('lzw');
+    jsonCompressor.decompress()
+      .then(function(inputsJson){
+        for (const key in inputsJson) {
+          var el = document.querySelector('#'+key);
+          if(el){
+            el.value = inputsJson[key];
+          }
+        }
+      });
+  }
+}
+
+function _mainCommonScript(){
+  _initScanLinkSharerInputs();
+	_loadExternalJS('https://cdn.jsdelivr.net/npm/json-url@3.1.0/dist/browser/json-url-single.min.js')
+	.then(function(){
+      _insertSharableFormElementToHTML();
+      _restoreFromSQueryParamToInputValues();
+		});
+}
+_mainCommonScript();

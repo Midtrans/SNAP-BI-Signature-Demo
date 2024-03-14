@@ -15,7 +15,7 @@
       <form id="mainForm" onsubmit="generateSignature(event); return false">
         <label>PrivateKey:</label>
         <!-- NOTE: This is sample Private Key from Midtrans Docs, it is intended as publicly visible -->
-        <textarea name="inputString" id="privateKey" rows="5">
+        <textarea data-link-sharer="any" name="inputString" id="privateKey" rows="5">
 -----BEGIN PRIVATE KEY-----
 MIIBVQIBADANBgkqhkiG9w0BAQEFAASCAT8wggE7AgEAAkEAlas/ul92ZfLV8cxf
 k7kQU0V41Sp9RlDylXTTmUv92scPyVsTRQSN8RpSe/DKvZfdm+mWd2wYhPz14cg2
@@ -28,7 +28,7 @@ Rocmtyw5WnLB
 -----END PRIVATE KEY-----</textarea>
 
         <label>raw SeamlessData <small>(before encoded)</small></label>
-        <input onkeyup="encodeInputString();" id="rawSeamlessData" type="text" value="mobileNumber=6281234000001&paymentType=gopay">
+        <input data-link-sharer="any" onkeyup="encodeInputString();" id="rawSeamlessData" type="text" value="mobileNumber=6281234000001&paymentType=gopay">
         <br>
         <label>Preview of string to be signed: <small>seamlessData=URLEncode(rawSeamlessData)</small>:</label>
         <textarea id="stringToSign" rows="2"></textarea>
@@ -92,9 +92,11 @@ Rocmtyw5WnLB
       </pre>
     </div>
 -->
-  </div>
+
+  </main>
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jsrsasign/11.1.0/jsrsasign-all-min.js" integrity="sha512-Eu9j+HZBor7muHf6IDWoWZ8FKVr6nKe9eIIVR28NEte4Y4GiYRlke26XGdR/re81XE/FfLoLYYVkvNk5GY9RvQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  <script src="./../_asset/common.js"></script> 
   
   <script>
 /* HELPER SCRIPTS */
