@@ -65,12 +65,13 @@ function _insertSharableFormElementToHTML(){
   mainEl.insertAdjacentHTML(
     "beforeend",
     `
-  <details open>
+  <details>
     <summary>Sharable URL</summary>
+    <br>
+    <p><small>Useful to generate a sharable URL (when it opened, will auto-fill the form with the exact same value as you have above), click below, then copy-paste the long URL to share to people.</small></p>
     <article>
       <label><a onclick="_generateSharableUrlOutput('#sharableUrl');" href="#/">Generate Sharable URL:</a></label>
       <input type="text" id="sharableUrl" placeholder="Click above to generate...">
-      <p><small>Copy the URL value. This URL when opened will auto-fill the form with the exact same value as you have above.</small></p>
     </article>
   </details>
     `
