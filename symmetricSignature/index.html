@@ -15,19 +15,19 @@
       <form id="mainForm" onsubmit="generateSignature(event); return false">
 
         <label>ClientSecret</label>
-        <input onkeyup="processAndAppendInputString();" id="clientSecret" type="text" value="B5FnHVeeSfzz7RHeihqDtuN2tePoliR93pvRvuQoIzoPk2VO6ph0QQY6MQzeDGRSOllGCEEVHzUnBm0nBhAWTh10uA9LhraacI2vEuDfKUV4Id7dGp8aBhSzF3QGIqKB">
+        <input data-link-sharer="any" onkeyup="processAndAppendInputString();" id="clientSecret" type="text" value="B5FnHVeeSfzz7RHeihqDtuN2tePoliR93pvRvuQoIzoPk2VO6ph0QQY6MQzeDGRSOllGCEEVHzUnBm0nBhAWTh10uA9LhraacI2vEuDfKUV4Id7dGp8aBhSzF3QGIqKB">
 
         <label>HTTPMethod <small>(All in Uppercase)</small></label>
-        <input onkeyup="processAndAppendInputString();" id="HTTPMethod" type="text" value="POST">
+        <input data-link-sharer="any" onkeyup="processAndAppendInputString();" id="HTTPMethod" type="text" value="POST">
 
         <label>EndpointUrl <small>(Relative path. Without API domain prefix. Includes all query params, if any.)</small></label>
-        <input onkeyup="processAndAppendInputString();" id="endpointUrl" type="text" value="/v1.0/qr/qr-mpm-generate">
+        <input data-link-sharer="any" onkeyup="processAndAppendInputString();" id="endpointUrl" type="text" value="/v1.0/qr/qr-mpm-generate">
 
         <label>AccessToken <small>(Without `Bearer ` prefix)</small></label>
-        <input onkeyup="processAndAppendInputString();" id="accessToken" type="text" value="eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJzdWIiOiJvcGVuYXBpLXRlc3Qtd2ViLWludm9rZSIsImlzcyI6ImdvcGF5IiwiZXhwIjoxNzA5NzEyNzkyLCJpYXQiOjE3MDk3MTE4OTJ9.HGDHiwv6C7TmYlNPBeiM4H71yh2_gMdtyJUIzaYgC0IoFQDjwC9jgq_sQ83vyc1o2EV0lSVaus48rPFqjElZ0lixrPEYtwyVu9dt0_reyTQJ7sUEuEziaEkgwlfyxa96FdptJdE-NTLWtbaQ9De33AwKmjIOcHnWbHRMjO954d9wa7Ks5Kpa2wmbyA7qEpnHno6xHQHxQ14zUFd6N5WaTQ6YFlzwNMdgk5etUJ0XPiHwDZKxaPEpSORqqhZSdxkX18F8mhlSfP0DlMXq9LzOg7elaCQRibplrXlBjC4FLTHYlcDyQUXTvelFZhiLdKpdH_koUn7sCa0bnzYRp1QHug">
+        <input data-link-sharer="any" onkeyup="processAndAppendInputString();" id="accessToken" type="text" value="eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJzdWIiOiJvcGVuYXBpLXRlc3Qtd2ViLWludm9rZSIsImlzcyI6ImdvcGF5IiwiZXhwIjoxNzA5NzEyNzkyLCJpYXQiOjE3MDk3MTE4OTJ9.HGDHiwv6C7TmYlNPBeiM4H71yh2_gMdtyJUIzaYgC0IoFQDjwC9jgq_sQ83vyc1o2EV0lSVaus48rPFqjElZ0lixrPEYtwyVu9dt0_reyTQJ7sUEuEziaEkgwlfyxa96FdptJdE-NTLWtbaQ9De33AwKmjIOcHnWbHRMjO954d9wa7Ks5Kpa2wmbyA7qEpnHno6xHQHxQ14zUFd6N5WaTQ6YFlzwNMdgk5etUJ0XPiHwDZKxaPEpSORqqhZSdxkX18F8mhlSfP0DlMXq9LzOg7elaCQRibplrXlBjC4FLTHYlcDyQUXTvelFZhiLdKpdH_koUn7sCa0bnzYRp1QHug">
 
         <label>RequestBody <small>(Make sure to input valid JSON format, else it will fail)</small></label>
-        <textarea onkeyup="processAndAppendInputString();" id="requestBody" rows="15">
+        <textarea data-link-sharer="any" onkeyup="processAndAppendInputString();" id="requestBody" rows="15">
 {
   "partnerReferenceNo": "2020102900000000000001",
   "amount": {
@@ -44,7 +44,7 @@
 }</textarea>
 
         <label>X-TIMESTAMP<small>(if needed, <a href="#/" onclick="generateCurrentTimestampAndOutput();">click here to generate current timestamp</a> )</small></label>
-        <input onkeyup="processAndAppendInputString();" id="timestamp" type="text" value="">
+        <input data-link-sharer="any" onkeyup="processAndAppendInputString();" id="timestamp" type="text" value="">
         
         <br>
         <p><small>Produced from inputs above:</small></p>
@@ -127,6 +127,7 @@
   </div>
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jsrsasign/11.1.0/jsrsasign-all-min.js" integrity="sha512-Eu9j+HZBor7muHf6IDWoWZ8FKVr6nKe9eIIVR28NEte4Y4GiYRlke26XGdR/re81XE/FfLoLYYVkvNk5GY9RvQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  <script src="./../_asset/common.js"></script>
   
   <script>
 /* HELPER SCRIPTS */

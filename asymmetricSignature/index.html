@@ -15,7 +15,7 @@
       <form id="mainForm" onsubmit="generateSignature(event); return false">
         <label>PrivateKey:</label>
         <!-- NOTE: This is sample Private Key from Midtrans Docs, it is intended as publicly visible -->
-        <textarea name="inputString" id="privateKey" rows="5">
+        <textarea data-link-sharer="any" name="inputString" id="privateKey" rows="5">
 -----BEGIN PRIVATE KEY-----
 MIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQCVZu2WHd4z5tbe
 fkAWPjbB10Lgvu1CpsuIIVtO/wrrvKeD2LArmYSf5QxeJGG8HYlVYVp8I8/EVqay
@@ -46,9 +46,9 @@ u256RIyMB13qIuqrc91Z0hM=
 -----END PRIVATE KEY-----</textarea>
 
         <label>X-CLIENT-KEY</label>
-        <input onkeyup="appendInputString();" id="xClientKey" type="text" value="G1234325-SNAP">
+        <input data-link-sharer="any" onkeyup="appendInputString();" id="xClientKey" type="text" value="G1234325-SNAP">
         <label>X-TIMESTAMP <small>(if needed, <a href="#/" onclick="generateCurrentTimestampAndOutput();">click here to generate current timestamp</a> )</small></label>
-        <input onkeyup="appendInputString();" id="xTimestamp" type="text" value="">
+        <input data-link-sharer="any" onkeyup="appendInputString();" id="xTimestamp" type="text" value="">
         <br>
         <label>Preview of: stringToSign=<small>X-CLIENT-KEY+"|"+X-TIMESTAMP</small>:</label>
 
@@ -107,6 +107,7 @@ u256RIyMB13qIuqrc91Z0hM=
   </div>
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jsrsasign/11.1.0/jsrsasign-all-min.js" integrity="sha512-Eu9j+HZBor7muHf6IDWoWZ8FKVr6nKe9eIIVR28NEte4Y4GiYRlke26XGdR/re81XE/FfLoLYYVkvNk5GY9RvQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  <script src="./../_asset/common.js"></script>
   
   <script>
 /* HELPER SCRIPTS */

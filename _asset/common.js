@@ -88,6 +88,7 @@ function _restoreFromSQueryParamToInputValues(){
           var el = document.querySelector('#'+key);
           if(el){
             el.value = inputsJson[key];
+            el.dispatchEvent(new Event('keyup'));
           }
         }
       });
