@@ -27,7 +27,7 @@
         <input onkeyup="processAndAppendInputString();" id="accessToken" type="text" value="eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJzdWIiOiJvcGVuYXBpLXRlc3Qtd2ViLWludm9rZSIsImlzcyI6ImdvcGF5IiwiZXhwIjoxNzA5NzEyNzkyLCJpYXQiOjE3MDk3MTE4OTJ9.HGDHiwv6C7TmYlNPBeiM4H71yh2_gMdtyJUIzaYgC0IoFQDjwC9jgq_sQ83vyc1o2EV0lSVaus48rPFqjElZ0lixrPEYtwyVu9dt0_reyTQJ7sUEuEziaEkgwlfyxa96FdptJdE-NTLWtbaQ9De33AwKmjIOcHnWbHRMjO954d9wa7Ks5Kpa2wmbyA7qEpnHno6xHQHxQ14zUFd6N5WaTQ6YFlzwNMdgk5etUJ0XPiHwDZKxaPEpSORqqhZSdxkX18F8mhlSfP0DlMXq9LzOg7elaCQRibplrXlBjC4FLTHYlcDyQUXTvelFZhiLdKpdH_koUn7sCa0bnzYRp1QHug">
 
         <label>RequestBody <small>(Make sure to input valid JSON format, else it will fail)</small></label>
-        <textarea onkeyup="processAndAppendInputString();" name="inputString" id="requestBody" rows="15">
+        <textarea onkeyup="processAndAppendInputString();" id="requestBody" rows="15">
 {
   "partnerReferenceNo": "2020102900000000000001",
   "amount": {
@@ -61,7 +61,7 @@
         </details>
 
         <label>Preview of: stringToSign= <small>HTTPMethod +":"+ EndpointUrl +":"+ AccessToken +":"+ Lowercase(HexEncode(SHA-256(minify(RequestBody)))) +":"+ X-TIMESTAMP</small>:</label>
-        <textarea name="appendedString" id="appendedString" rows="8"></textarea>
+        <textarea id="appendedString" rows="8"></textarea>
         
         <input class="btn btn-primary" type="submit" value="Generate Symmetric Signature">
       </form>      
@@ -70,7 +70,7 @@
 
     <article>
       <h5>Symmetric HMAC_SHA512 Signature Result= <small>HMAC_SHA512(clientSecret, stringToSign)</small>:</h5>
-      <textarea name="outputString" id="outputString" rows="5" disabled>Click btn above to generate...</textarea>
+      <textarea id="outputString" rows="5" disabled>Click btn above to generate...</textarea>
       <p><small>That will be the value to be used as `X-SIGNATURE` HTTP header.</small></p>
     </article>
 <!-- 
@@ -79,7 +79,7 @@
       <article>
         <p><small>Alternatively, you can also choose Asymmetric Signature instead, use this is the value to be used as `X-SIGNATURE` HTTP header.</small></p>
         <h5>Asymmetric Signature Result= <small>SHA256withRSA(clientSecret, stringToSign)</small>:</h5>
-        <textarea name="outputString" id="outputString2" rows="5" disabled></textarea>
+        <textarea id="outputString2" rows="5" disabled></textarea>
       </article>
     </details> 
 -->
