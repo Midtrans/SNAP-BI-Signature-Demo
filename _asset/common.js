@@ -81,7 +81,7 @@ function _restoreFromSQueryParamToInputValues(){
   var encodedCompressedInputsJson = urlParams.get('s');
   if(encodedCompressedInputsJson){
     var jsonCompressor = JsonUrl('lzw');
-    jsonCompressor.decompress()
+    jsonCompressor.decompress(encodedCompressedInputsJson)
       .then(function(inputsJson){
         for (const key in inputsJson) {
           var el = document.querySelector('#'+key);
