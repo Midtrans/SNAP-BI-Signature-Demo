@@ -50,10 +50,11 @@ function _generateSharableUrlOutput(elSelector){
   var jsonCompressor = JsonUrl('lzw');
   jsonCompressor.compress(inputsJson)
     .then(function(encodedCompressedJson){
-      var sharableUrl = window.location.href + '?s=' + encodedCompressedJson;
+      var sharableUrl = window.location.origin + window.location.pathname + '?s=' + encodedCompressedJson;
+      console.log("sharableUrl: ",sharableUrl,sharableUrl.length);
       if(sharableUrl.length > 2000){
-        alert('Fail to generate Sharable URL, URL max length 2000 char exceeded!');
-        return false;
+        alert('Note: Sharable URL max length 2000 char exceeded, the URL may not always work with some browser');
+        // return false;
       }
       document.querySelector(elSelector).value = sharableUrl;
     });
