@@ -3,7 +3,7 @@ var crypto = require("crypto");
 
 /*-- INPUT --*/
 var clientSecret = "myclientsecret";
-var HTTPMethod = "POST".toUpperCase(); // ensure all UPPERCASE
+var httpMethod = "POST".toUpperCase(); // ensure all UPPERCASE
 var endpointUrl = "/v1.0/qr/qr-mpm-generate";
 var accessToken = "myaccesstoken"; // without the `Bearer ` prefix
 // ensure requestBody is a valid JSON string format, don't worry about whitespace, we'll clean up later
@@ -38,7 +38,7 @@ var lowerHexSha256MinifiedRequestBody = crypto.createHash("sha256")
   .toLowerCase();
 
 var combinedStringToSign = 
-  HTTPMethod+":"+
+  httpMethod+":"+
   endpointUrl+":"+
   accessToken+":"+
   lowerHexSha256MinifiedRequestBody+":"+
