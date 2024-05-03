@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1"> 
+  <title>Extract Public Key from Private Key Tool</title>
+  <link rel="icon" href="https://via.placeholder.com/70x70" />
+  <link rel="stylesheet" href="https://unpkg.com/mvp.css" />  
+</head>
+<body>
+  <main class="container">
+    <article>
+      <br>
+      <h2>Extract Public Key from Private Key Tool</h2>
+      <p><small>Useful in case you lost/forgot Public Key, but still have the Private Key. You can reconstruct it here.</small></p>
+      <form id="mainForm" onsubmit="processInputStringThenOutput(event); return false">
+        <label>Private Key <small>(of the HTTP Request/Notification Sender, not the Receiver)</small></label>
+        <!-- NOTE: This is sample Private Key from Midtrans Docs, it is intended as publicly visible -->
+        <textarea data-link-sharer="any" id="privateKey" rows="30">
+-----BEGIN PRIVATE KEY-----
+MIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQCVZu2WHd4z5tbe
+fkAWPjbB10Lgvu1CpsuIIVtO/wrrvKeD2LArmYSf5QxeJGG8HYlVYVp8I8/EVqay
+JUbcyOd4aMLQFiCambDipecCfI7ecJ0K4+2ZneWOEq9JM91ZnGtwuLVdr1X/4/Nv
+yGuNvmLAyfpJkU14yZliAUqJJ656jpM+WfY+hOpcLOzUe2wzx5RV7wYCyMl7/d1i
+X33afJc6kbbUaA27yjlPdY6m0+DoZ0NNaRNZS7jzfJFtVXLTg/PgvwMNlMO/5Zyw
+BWIOfWsD+MHUC6P9QYrHai8ZwEf9r+GivlNsAFs4NTpw9MdPngrexJm29k1Xh4UM
+HV//jB1/AgMBAAECggEADcXGyitns/4oOauGyeYjUxw+eIxxP88zfRGiIralMZUb
+Fi7wEpzc2oaZbMZK0jYg1mOanU4J1a4tQMfp7+l/WRzDNL6Nc+MOKN6lXJfR7dSQ
+zZO0cBBbvIyhZwymb5/ZUbNdWM0UjvnbE6d0rsTpwp77+TMxYpynDJ9U2S70ySxe
+fGi7x4rK02/8xmj1fY/Ls+uoYhF4IbGJIkFvrlAdWyFvv6sCGBYxl5sPuitgQxPv
+Yc7dS7HE+6nZ+wWgoIXjC4CfxHBa9u3dfu3XAnPY3xpnVsbxCAH9OOIrZPY0C/Pq
+gj+EElCBChUzDiedV3XipKUweDA+64sNm5NjqlqU8QKBgQDFf5a9vHVf9r2CTOgm
+z5wTrK7aTwKwCNC4zpZUxDR8k7AV2gTelabpPWqUMZyRMUPs2hyBvhEWVNKxx3qs
+7BAVpmcttuS5/dLNVdhNPUC2IgZqf3jWH2aS3lkci8DATQCphrEXZ3jrNaIRtrSC
+kflE+yY8YP8b7ObktgvHz39JMQKBgQDBqCsMmOsQAveIQk5FGAMxsFU9G7OIBFHo
+xpwkKUCjoqGxM+YQqDvcVeXNd/HdLnmR05//eoONemuDyYy8XRoud4tpaRKU/FK7
+06WdljztB5rn2+cdUbmcU0fZiRQk+WuXsopZn3GUNvA/fQOW9qs7B5Rm5W71FeGk
+ZgsvlAUlrwKBgQCUgFFaLWCcXa01UpqkxCp5aLi5EfvVXWuD6mKDLlzA51PZums6
+6o/shO+kqoEtczu91mrk64NxpSof3vxRFdcqUEr4xrLJXx+oocnYmhwUVxU38s1r
+Q4UfHe0nV7YBYmUDE3IJRRZY1aUdaKHmI9iok6e2csCfwMwEYRYOkekFoQKBgCyy
+Oa1gpfA+Hw+N7i64ShRv1FyURi2Agb8uB9+4vbiG0rbpeZIioh5KnQ19P4+DKH/l
+zinTBwXiWWpDXH4lJuPOp5ierbFBQ38ibDkg8dLrTG9zK7ZypFpWRmEI6GNYReLv
+TEs/J6HDxFOC8Q8ow4COUUwmbCOY90lQXAiRK1b1AoGAScK1db9X5Ct+JtnjYyzi
+GYLwyPhHCQIVmEDfuvbMs74woQsrBm3dBB3b2vf9pqcSZB4WAbTQ3wCdxCJKg6MN
+6eXBO1M1lcIpZjCDyiXXi7PozNmkasRDUyDFwxlnyDLdRHL3FD+dh6do32FwGLBQ
+u256RIyMB13qIuqrc91Z0hM=
+-----END PRIVATE KEY-----</textarea>
+        
+        <input class="btn btn-primary" type="submit" value="Extract Public Key">
+      </form>      
+    </article>
+    <!-- <hr> -->
+
+    <article>
+      <h5>Extract Public Key Result<small></small>:</h5>
+      <textarea id="outputString" rows="15" disabled>Click btn above to extract...</textarea>
+      <p><small></small></p>
+    </article>
+
+    <hr>
+
+    <!-- <article>
+      
+      <h4>Signature Formula:</h4>
+      <ul>
+        <li><a target="_blank" href="https://docs.midtrans.com/reference/payment-notification-api#request-header">Reference</a></li>
+      </ul>
+
+      <h4>Sample Signature Generation Implementation Code:</h4>
+      <p>
+        <ul>
+          <li><a target="_blank" href="https://github.com/Midtrans/SNAP-BI-Signature-Demo/blob/main/sample-code/asymmetricSignatureNotification/xSignatureGenerationNode.js">Javascript (NodeJS)</a></li>
+          <li><a target="_blank" href="https://github.com/Midtrans/SNAP-BI-Signature-Demo/blob/main/sample-code/asymmetricSignatureNotification/xSignatureGenerationJava.java">Java</a></li>
+          <li><a target="_blank" href="https://github.com/Midtrans/SNAP-BI-Signature-Demo/blob/main/sample-code/asymmetricSignatureNotification/xSignatureGenerationGo.go">Go</a></li>
+          <li>Auto converted using AI <small>(*may not be accurate, but quite helpful)</small>:
+            <ul>
+              <li><a href="https://g.co/gemini/share/2f4209432b69" target="_blank" rel="noopener noreferrer">Python</a></li>
+              <li><a href="https://g.co/gemini/share/63e7bb5454d7" target="_blank" rel="noopener noreferrer">Ruby</a></li>
+            </ul>
+          </li>
+          <li>Tips:
+            <ul>
+              <li>You can also convert to your preferred Language(s) by using your preferred AI (for example, use Google Gemini / ChatGPT)</li>
+              <li>You can also ask AI to explain any piece of the example code to help you understand. <a href="https://g.co/gemini/share/d4c066729ee0" target="_blank" rel="noopener noreferrer">For example.</a></li>
+            </ul>
+          </li>
+        </ul>
+      </p>
+      
+    </article> -->
+    <hr>
+  </div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jsrsasign/11.1.0/jsrsasign-all-min.js" integrity="sha512-Eu9j+HZBor7muHf6IDWoWZ8FKVr6nKe9eIIVR28NEte4Y4GiYRlke26XGdR/re81XE/FfLoLYYVkvNk5GY9RvQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  <script src="./../_asset/common.js"></script>
+  
+  <script>
+/* HELPER SCRIPTS */
+var extractPublicKeyFromPrivateKeyPEM = function(privateKeyPEM = ""){
+  // Convert PEM-formatted private key to RSAKey object
+  var privateKey = KEYUTIL.getKey(privateKeyPEM);
+
+  // Extract modulus (n) and public exponent (e) from the private key
+  var modulus = privateKey.n.toString(16);
+  var publicExponent = privateKey.e.toString(16);
+
+  // Construct the public key object using modulus (n) and public exponent (e)
+  var publicKey = new RSAKey();
+  publicKey.setPublic(modulus, publicExponent);
+
+  // Convert the public key to PEM format
+  var publicKeyPEM = KEYUTIL.getPEM(publicKey);
+  return publicKeyPEM;
+}
+null;
+
+var processInputStringThenOutput = function(evt){
+  try {
+    var privateKeyPEM = document.querySelector('#privateKey').value;
+    var publicKeyPEM = extractPublicKeyFromPrivateKeyPEM(privateKeyPEM);
+    document.querySelector('#outputString').value = publicKeyPEM;
+    alert('Success to generate, check the result section below.');
+  } catch (error) {
+    var failMsg = 'Fail to generate, check if inputted Private Key is in PEM format & valid.';
+    document.querySelector('#outputString').value = failMsg;
+    alert(failMsg);
+  }
+}
+
+  
+/* MAIN SCRIPT, RUN ON PAGE LOAD */
+var main = function(){
+  // processInputStringThenOutput();
+};
+main();
+  </script>
+</body>
+</html>
