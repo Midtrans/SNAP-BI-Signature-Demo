@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1"> 
+  <title>Asymmetric SHA256withRSA Signature Demo</title>
+  <link rel="icon" href="https://via.placeholder.com/70x70" />
+  <link rel="stylesheet" href="https://unpkg.com/mvp.css" />  
+</head>
+<body>
+  <main class="container">
+    <article>
+      <br>
+      <h2>Asymmetric SHA256withRSA Signature Verification Demo</h2>
+      <form id="mainForm" onsubmit="verifySignature(event); return false">
+        <label>Public Key <small>(of the HTTP Request/Notification Sender, not the Receiver)</small></label>
+        <textarea data-link-sharer="any" id="publicKey" rows="5">
+-----BEGIN PUBLIC KEY-----
+MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAlWbtlh3eM+bW3n5AFj42
+wddC4L7tQqbLiCFbTv8K67yng9iwK5mEn+UMXiRhvB2JVWFafCPPxFamsiVG3Mjn
+eGjC0BYgmpmw4qXnAnyO3nCdCuPtmZ3ljhKvSTPdWZxrcLi1Xa9V/+Pzb8hrjb5i
+wMn6SZFNeMmZYgFKiSeueo6TPln2PoTqXCzs1HtsM8eUVe8GAsjJe/3dYl992nyX
+OpG21GgNu8o5T3WOptPg6GdDTWkTWUu483yRbVVy04Pz4L8DDZTDv+WcsAViDn1r
+A/jB1Auj/UGKx2ovGcBH/a/hor5TbABbODU6cPTHT54K3sSZtvZNV4eFDB1f/4wd
+fwIDAQAB
+-----END PUBLIC KEY-----</textarea>
+        <p>Below values are received from Notification:</p>
+        <label>Notification X-SIGNATURE Header <small>(to verify against the notification data)</small></label>
+        <textarea data-link-sharer="any" id="xSignature" rows="5">
+RoJnP2tH/YiOhHM/lMVBMSAuzRmS8VrWdIy04Qqyb56daV7oWFMFoMMzqnjQ+q0MIUalYgU094GWQnCx2c29xb1kkqHhv2+iJ9xl6NjGmFGYqyvcKvUDAV83Y1Mw9JnsEcjcupdGw9/MRv/mm2GMrQ+BCZGfc4a46JDyPZbcY294vDGqs5rFBN6iYer5ro4cAQGo9hET2G82Y+j50vCyO/79GFE4vB1rvtu6PK2Bxi+vTYV8k7P7PS8tOPWM2O+kjiVWjwvLR99Botou+a8sxlQqZaihfWMKcByzV+Lgkr9cptpjys+1NIRWT1ad/sJBSLHyldzC3q2oRn5z5oZmyg==</textarea>
+
+        <label>Notification HTTPMethod <small>(All in Uppercase)</small></label>
+        <input data-link-sharer="any" onkeyup="processAndAppendInputString();" id="HTTPMethod" type="text" value="POST">
+
+        <label>Notification EndpointUrl <small>(Relative path. Without API domain prefix. Includes all query params, if any.)</small></label>
+        <input data-link-sharer="any" onkeyup="processAndAppendInputString();" id="endpointUrl" type="text" value="/v1.0/debit/notify">
+
+        <label>NotificationBody <small>(Make sure to input valid JSON string format, else it will fail)</small></label>
+        <textarea data-link-sharer="any" onkeyup="processAndAppendInputString();" id="requestBody" rows="7">
+{"originalPartnerReferenceNo":"GP24043015193402809","originalReferenceNo":"A120240430081940S9vu8gSjaRID","merchantId":"G099333790","amount":{"value":"102800.00","currency":"IDR"},"latestTransactionStatus":"00","transactionStatusDesc":"SUCCESS","additionalInfo":{"refundHistory":[]}}</textarea>
+
+        <label>Notification X-TIMESTAMP Header<small></small></label>
+        <input data-link-sharer="any" onkeyup="processAndAppendInputString();" id="timestamp" type="text" value="2024-05-02T14:43:08+07:00">
+        
+        <br>
+        <p><small>Produced from notification data above:</small></p>
+
+        <details>
+          <summary><small>`Notification Body` transformation process in details</small></summary>
+
+          <label><small>minify(NotificationBody)</small>:</label>
+          <textarea id="minifiedRequestBody" rows="5"></textarea>
+          <label><small>HexEncode(SHA-256(minify(NotificationBody)))</small>:</label>
+          <textarea id="hexSha256MinifiedRequestBody" rows="2"></textarea>
+          <label><small>Lowercase(HexEncode(SHA-256(minify(NotificationBody))))</small>:</label>
+          <textarea id="lowerHexSha256MinifiedRequestBody" rows="2"></textarea>
+        </details>
+
+        <label>Preview of: rawStringDataToVerifyAgainstSignature= <small>HTTPMethod +":"+ EndpointUrl +":"+ Lowercase(HexEncode(SHA-256(minify(NotificationBody)))) +":"+ X-TIMESTAMP</small>:</label>
+        <textarea id="appendedString" rows="3"></textarea>
+        
+        <input class="btn btn-primary" type="submit" value="Verify Asymmetric Signature">
+      </form>      
+    </article>
+    <!-- <hr> -->
+
+    <article>
+      <h5>isSignatureVerified Result= <small>verifySignature(publicKey, rawStringDataToVerifyAgainstSignature, Notification X-SIGNATURE Header)</small>:</h5>
+      <textarea id="outputString" rows="5" disabled>Click btn above to verify...</textarea>
+      <p><small>True = signature is verified. False = not verified.</small></p>
+    </article>
+
+    <hr>
+
+    <article>
+      
+      <!-- <h4>Signature Formula:</h4>
+      <ul>
+        <li><a target="_blank" href="https://docs.midtrans.com/reference/payment-notification-api#request-header">Reference</a></li>
+      </ul> -->
+
+      <h4>Sample Signature Generation Implementation Code:</h4>
+      <p>
+        <ul>
+          <li><a target="_blank" href="https://github.com/Midtrans/SNAP-BI-Signature-Demo/blob/main/sample-code/asymmetricSignatureNotificationVerification/xSignatureVerificationNode.js">Javascript (NodeJS)</a></li>
+          <!-- <li>Auto converted using AI <small>(*may not be accurate, but quite helpful)</small>:
+            <ul>
+              <li><a href="https://g.co/gemini/share/2f4209432b69" target="_blank" rel="noopener noreferrer">Python</a></li>
+              <li><a href="https://g.co/gemini/share/63e7bb5454d7" target="_blank" rel="noopener noreferrer">Ruby</a></li>
+            </ul>
+          </li> -->
+          <li>Tips:
+            <ul>
+              <li>You can also convert to your preferred Language(s) by using your preferred AI (for example, use Google Gemini / ChatGPT)</li>
+              <li>You can also ask AI to explain any piece of the example code to help you understand. <a href="https://g.co/gemini/share/d4c066729ee0" target="_blank" rel="noopener noreferrer">For example.</a></li>
+            </ul>
+          </li>
+        </ul>
+      </p>
+      
+    </article>
+    <hr>
+<!--     
+    <div>
+      <h4>Sample Inputs </h4>
+      <pre>
+    ...
+      </pre>
+    </div>
+-->
+  </div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jsrsasign/11.1.0/jsrsasign-all-min.js" integrity="sha512-Eu9j+HZBor7muHf6IDWoWZ8FKVr6nKe9eIIVR28NEte4Y4GiYRlke26XGdR/re81XE/FfLoLYYVkvNk5GY9RvQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  <script src="./../_asset/common.js"></script>
+  
+  <script>
+/* HELPER SCRIPTS */
+var generateCurrentTimestampString = function(){
+	return (new Date()).toISOString();
+}
+
+var generateCurrentTimestampAndOutput = function(){
+  var el = document.querySelector('#timestamp');
+	el.value = generateCurrentTimestampString();
+  el.dispatchEvent(new Event('keyup'));
+  return false;
+}
+  
+var processAndAppendInputString = function(evt){
+  var HTTPMethod = document.querySelector('#HTTPMethod').value;
+  var endpointUrl = document.querySelector('#endpointUrl').value;
+  var requestBody = document.querySelector('#requestBody').value;
+  var timestamp = document.querySelector('#timestamp').value;
+  
+  var minifiedRequestBody = ""; // default value to handle empty requestBody in scenario like GET
+  if(requestBody.length > 0){
+    try {
+      minifiedRequestBody = JSON.stringify(JSON.parse(requestBody));
+    } catch (err){ 
+      console.error(err); 
+      alert('Fail to minify requestBody as JSON. Please re-check requestBody input. - '+ err); 
+    }
+  }
+  var md = new KJUR.crypto.MessageDigest({alg: "sha256", prov: "cryptojs"});
+  md.updateString(minifiedRequestBody);
+  var hexSha256MinifiedRequestBody = md.digest(); //digest() result is already in Hex
+  var lowerHexSha256MinifiedRequestBody = hexSha256MinifiedRequestBody.toLowerCase();
+
+  var appendedStringToSign = 
+    HTTPMethod.toUpperCase()+":"+
+    endpointUrl+":"+
+    lowerHexSha256MinifiedRequestBody+":"+
+    timestamp;
+
+  document.querySelector('#minifiedRequestBody').value = minifiedRequestBody;
+  document.querySelector('#hexSha256MinifiedRequestBody').value = hexSha256MinifiedRequestBody;
+  document.querySelector('#lowerHexSha256MinifiedRequestBody').value = lowerHexSha256MinifiedRequestBody;
+  document.querySelector('#appendedString').value = appendedStringToSign;
+}
+
+var verifyAsymmetricSignature = function(){ // not currently working, sigObject.init require PEM private key
+  // input
+  var publicKeyPEM = document.querySelector('#publicKey').value;
+  var xSignature = document.querySelector('#xSignature').value;
+  var combinedStringDataToVerifyAgainstSignature = document.querySelector('#appendedString').value;
+  
+  // generate Mac signature
+  try {
+    // Create a new KJUR.crypto.Signature object
+    var sig = new KJUR.crypto.Signature({"alg": "SHA256withRSA"});
+    // Decode the PEM-formatted public key
+    var publicKey = KEYUTIL.getKey(publicKeyPEM);
+    // Initialize the Signature object for verification
+    sig.init(publicKey);
+    // Update Signature object with the original data
+    sig.updateString(combinedStringDataToVerifyAgainstSignature);
+    // Verify the signature against the original data
+    var isSignatureVerified = sig.verify(
+      b64tohex(xSignature) // convert xSignature from base64 to hex format
+    );
+  } catch (err){
+    console.error(err);
+    alert('Fail to verify SHA signature! Likely due to invalid input.');
+    return false;
+  }
+
+	// output
+  document.querySelector('#outputString').value = isSignatureVerified ? "true" : "false";
+};
+    
+var verifySignature = function(evt){
+  verifyAsymmetricSignature();
+  if(evt){
+    // exec only if function triggered from UI.
+    alert('Success to verify, check the result section below.');
+  }
+  return false;
+}
+  
+/* MAIN SCRIPT, RUN ON PAGE LOAD */
+var main = function(){
+	// generateCurrentTimestampAndOutput();
+  processAndAppendInputString();
+  // verifySignature();
+};
+main();
+/**
+ * @TODO:
+ * - add jsrsasign version to sample nodejs code
+ * - add more sample in more language
+ * - review var naming in this file/code
+ */
+  </script>
+</body>
+</html>
