@@ -2,7 +2,7 @@
 var crypto = require("crypto");
 
 /*-- INPUT --*/
-// Input or import your Private Key, store into a string variable
+// Input or import the HTTP Notification/request sender's Private Key, store into a string variable
 var privateKeyString = `-----BEGIN PRIVATE KEY-----
 MIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQCVZu2WHd4z5tbe
 fkAWPjbB10Lgvu1CpsuIIVtO/wrrvKeD2LArmYSf5QxeJGG8HYlVYVp8I8/EVqay
@@ -92,7 +92,7 @@ var xSignatureString = crypto.createSign('RSA-SHA256')
 /*-- OUTPUT --*/
 console.log("xSignatureString:");
 console.log(xSignatureString);
-// Next, this xSignatureString is the value to be validated against `X-SIGNATURE` HTTP header received on HTTP Notification (Webhook).
+// Next, this xSignatureString is the value sent as `X-SIGNATURE` HTTP header on HTTP Notification (Webhook).
 
 /* Sample xSignatureString: 
 eUGsomFLNsjWzehgGsa317MqcVOgscay/Hml8yNmOsFhmoBM7pso+UPDgSe34anXvecSQkf5NOr0fbr8k9qdyyoWiYX7DTq/Wnz8XC0cRCCbNZfyLIyF33HO9cnvxOcRQq9DuWlQtld+uEluuivVdN2TiaWLpUTmfB/H7noZnXWWDj6FYa4n5kSo4o3aTeFYAF9EmLp0Tcsl8CiHSQCrQnIbB8M2+puLwyJ1l2OocvZ5qgjf5f2DqlCbemsSMzYzjN+YMrb0kiDx0TiW5UTk+WZass43xIfb3vdrlX+U2JSk5YsJ8lFpp9F+7FId4cyncElNFEbt3zWuP4iDzXteCg==
