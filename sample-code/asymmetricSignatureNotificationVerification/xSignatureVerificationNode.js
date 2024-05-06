@@ -12,12 +12,17 @@ OpG21GgNu8o5T3WOptPg6GdDTWkTWUu483yRbVVy04Pz4L8DDZTDv+WcsAViDn1r
 A/jB1Auj/UGKx2ovGcBH/a/hor5TbABbODU6cPTHT54K3sSZtvZNV4eFDB1f/4wd
 fwIDAQAB
 -----END PUBLIC KEY-----`;
-
+/*-- Below values are from the received HTTP notification/request --*/
+var receivedSignatureStringToVerify =
+  "RoJnP2tH/YiOhHM/lMVBMSAuzRmS8VrWdIy04Qqyb56daV7oWFMFoMMzqnjQ+q0MIUalYgU094GWQnCx2c29xb1kkqHhv2+iJ9xl6NjGmFGYqyvcKvUDAV83Y1Mw9JnsEcjcupdGw9/MRv/mm2GMrQ+BCZGfc4a46JDyPZbcY294vDGqs5rFBN6iYer5ro4cAQGo9hET2G82Y+j50vCyO/79GFE4vB1rvtu6PK2Bxi+vTYV8k7P7PS8tOPWM2O+kjiVWjwvLR99Botou+a8sxlQqZaihfWMKcByzV+Lgkr9cptpjys+1NIRWT1ad/sJBSLHyldzC3q2oRn5z5oZmyg==";
 // Sample raw string data to verify against signature
 var notificationHttpMethod = "POST";
 var notificationUrlPath = "/v1.0/debit/notify";
 var notificationBodyJsonString =
   '{"originalPartnerReferenceNo":"GP24043015193402809","originalReferenceNo":"A120240430081940S9vu8gSjaRID","merchantId":"G099333790","amount":{"value":"102800.00","currency":"IDR"},"latestTransactionStatus":"00","transactionStatusDesc":"SUCCESS","additionalInfo":{"refundHistory":[]}}'; // Sample notification body, replace with actual data you receive from Midtrans
+var notificationHeaderXTimestamp = "2024-05-02T14:43:08+07:00";
+/*-- end of values from the received HTTP notification/request --*/
+
 // minify the JSON notification body
 var minifiedNotificationBodyJsonString = JSON.stringify(
   JSON.parse(notificationBodyJsonString),
@@ -26,9 +31,9 @@ var minifiedNotificationBodyJsonString = JSON.stringify(
 var hashedNotificationBodyJsonString = crypto
   .createHash("sha256")
   .update(minifiedNotificationBodyJsonString)
-  .digest("hex");
-
-var NotificationHeaderXTimestamp = "2024-05-02T14:43:08+07:00";
+  .digest("hex")
+  // ensure the hash string is all in lowercase
+  .toLowerCase();
 
 var rawStringDataToVerifyAgainstSignature =
   notificationHttpMethod +
@@ -37,12 +42,9 @@ var rawStringDataToVerifyAgainstSignature =
   ":" +
   hashedNotificationBodyJsonString +
   ":" +
-  NotificationHeaderXTimestamp;
+  notificationHeaderXTimestamp;
 // Sample value:
 // rawStringDataToVerifyAgainstSignature = "POST:/v1.0/debit/notify:79ebbe6a6b695262dd686d0dedafc57c94e3b3dededf8d63971f8a95699ace85:2024-05-02T14:43:08+07:00";
-
-var receivedSignatureStringToVerify =
-  "RoJnP2tH/YiOhHM/lMVBMSAuzRmS8VrWdIy04Qqyb56daV7oWFMFoMMzqnjQ+q0MIUalYgU094GWQnCx2c29xb1kkqHhv2+iJ9xl6NjGmFGYqyvcKvUDAV83Y1Mw9JnsEcjcupdGw9/MRv/mm2GMrQ+BCZGfc4a46JDyPZbcY294vDGqs5rFBN6iYer5ro4cAQGo9hET2G82Y+j50vCyO/79GFE4vB1rvtu6PK2Bxi+vTYV8k7P7PS8tOPWM2O+kjiVWjwvLR99Botou+a8sxlQqZaihfWMKcByzV+Lgkr9cptpjys+1NIRWT1ad/sJBSLHyldzC3q2oRn5z5oZmyg==";
 
 /*-- SIGNATURE VERIFICATION --*/
 // create verifier object
