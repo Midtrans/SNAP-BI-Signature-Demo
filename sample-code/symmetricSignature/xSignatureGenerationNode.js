@@ -6,7 +6,7 @@ var clientSecret = "myclientsecret";
 var httpMethod = "POST".toUpperCase(); // ensure all UPPERCASE
 var endpointUrl = "/v1.0/qr/qr-mpm-generate";
 var accessToken = "myaccesstoken"; // without the `Bearer ` prefix
-// ensure requestBody is a valid JSON string format, don't worry about whitespace, we'll clean up later
+// ensure requestBody is a valid JSON string format, don't worry about whitespace, we'll clean up later, Fill it with "" empty string for GET request.
 var requestBody = `{
   "partnerReferenceNo": "2020102900000000000001",
   "amount": {

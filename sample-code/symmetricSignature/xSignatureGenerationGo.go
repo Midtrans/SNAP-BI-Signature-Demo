@@ -19,7 +19,7 @@ func main() {
 	httpMethod := strings.ToUpper( "POST" ) // ensure all UPPERCASE
 	endpointUrl := "/v1.0/qr/qr-mpm-generate"
 	accessToken := "myaccesstoken"
-	// ensure requestBody is a valid JSON string format, dont worry about whitespaces, it will be minified later
+	// ensure requestBody is a valid JSON string format, dont worry about whitespaces, it will be minified later. Fill it with "" empty string for GET request.
 	requestBody := `{
 		"partnerReferenceNo": "2020102900000000000001",
 		"amount": {

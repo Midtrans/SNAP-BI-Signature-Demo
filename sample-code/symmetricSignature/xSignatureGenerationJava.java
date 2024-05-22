@@ -15,7 +15,7 @@ public class Main {
     String httpMethod = "POST".toUpperCase(); // ensure all UPPERCASE
     String endpointUrl = "/v1.0/qr/qr-mpm-generate";
     String accessToken = "myaccesstoken";
-    // ensure requestBody is a valid JSON string format, dont worry about whitespaces, it will be minified later
+    // ensure requestBody is a valid JSON string format, dont worry about whitespaces, it will be minified later. Fill it with "" empty string for GET request.
     String requestBody = "{\"partnerReferenceNo\":\"2020102900000000000001\",\"amount\":{\"value\":\"12345678.00\",\"currency\":\"IDR\"},\"feeAmount\":{\"value\":\"12345678.00\",\"currency\":\"IDR\"},\"merchantId\":\"00007100010926\",\"terminalId\":\"213141251124\",\"validityPeriod\":\"2009-07-03T12:08:56-07:00\"}";
     String timestampString = new java.util.Date().toInstant().toString();
     // sample hardcoded timestamp value
